@@ -32,7 +32,7 @@ public class FractalGenerator : MonoBehaviour
         uvs[3] = new Vector2(1, 1);
         mesh.uv = uvs;
 
-        triangles = new int[12] { 0, 2, 1, 0, 2, 3, 2, 1, 3, 0, 3, 1 };
+        triangles = new int[12] { 1, 2, 0, 0, 2, 3, 2, 1, 3, 0, 3, 1 };
         mesh.triangles = triangles;
 
         mesh.RecalculateNormals();

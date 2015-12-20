@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{B0932E9E-492B-E07F-7E27-DFE1620E9892}") = "procedural-geometry", "Assembly-CSharp.csproj", "{26F74BE0-2C6E-A21C-9B30-657D2609C8C0}"
+EndProject
+Project("{B0932E9E-492B-E07F-7E27-DFE1620E9892}") = "procedural-geometry", "Assembly-CSharp-Editor.csproj", "{13030FED-718E-4AED-9099-09461D459FC1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{26F74BE0-2C6E-A21C-9B30-657D2609C8C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26F74BE0-2C6E-A21C-9B30-657D2609C8C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26F74BE0-2C6E-A21C-9B30-657D2609C8C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26F74BE0-2C6E-A21C-9B30-657D2609C8C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13030FED-718E-4AED-9099-09461D459FC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13030FED-718E-4AED-9099-09461D459FC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13030FED-718E-4AED-9099-09461D459FC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13030FED-718E-4AED-9099-09461D459FC1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
