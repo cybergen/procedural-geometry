@@ -18,32 +18,42 @@ public class FractalGenerator : MonoBehaviour
 
         var vertices = new List<Vector3>();
         var triangles = new List<int>();
-        AddTriangle(Vector3.zero, Vector3.up, vertices, triangles, BaseWidth);
+        Draw(Vector3.zero, Vector3.up, Vector3.forward, vertices, triangles, BaseWidth);
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray(); 
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
     }
 
-    private void AddTriangle(Vector3 center, Vector3 up, List<Vector3> currentVectors, List<int> triangles, float width)
+    private void Draw(
+        Vector3 center, 
+        Vector3 up, 
+        Vector3 forward,
+        List<Vector3> vectors, 
+        List<int> triangles, 
+        float width)
     {
-        var triangles = new int[12];
-
         var halfWidth = width / 2;
         var vertLeg = Mathf.Sqrt(Sq(width) - Sq(halfWidth));
+        var halfVert = vertLeg / 2;
 
-        var s = currentVectors.Count;
-        currentVectors.Add(new Vector3(0, 0, 0));
-        currentVectors.Add(new Vector3(width, 0, 0));
-        currentVectors.Add(new Vector3(width * 0.5f, 0, vertLeg));
-        currentVectors.Add(new Vector3(0.5f * width, vertLeg, vertLeg * 0.5f));
+        up.Normalize();
+        forward.Normalize();
+        var back = -forward;
+        var left = -Vector3.Cross(up, forward);
+        var right = Vector3.Cross(up, forward);
 
-        triangles = new int[12] {
+        var s = vectors.Count;
+        vectors.Add(center + halfWidth * left + halfVert * back);
+        vectors.Add(center + halfWidth * right + halfVert * back);
+        vectors.Add(center + halfVert * forward);
+        vectors.Add(center + up * vertLeg);
+
+        triangles.AddRange(new List<int> {
             s + 1, s + 2, s + 0,
             s + 0, s + 2, s + 3,
             s + 2, s + 1, s + 3,
-            s + 0, s + 3, s + 1 };
-        return triangles;
+            s + 0, s + 3, s + 1 });
     }
 
     private static float Sq(float value)
