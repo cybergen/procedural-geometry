@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
@@ -18,7 +17,7 @@ public class FractalGenerator : MonoBehaviour
 
         var vertices = new List<Vector3>();
         var triangles = new List<int>();
-        Draw(Vector3.zero, Vector3.up, Vector3.forward, vertices, triangles, BaseWidth);
+        Draw(Vector3.zero, Vector3.up, Vector3.forward, vertices, triangles, BaseWidth, FractalIterations);
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray(); 
         mesh.RecalculateNormals();
@@ -31,7 +30,8 @@ public class FractalGenerator : MonoBehaviour
         Vector3 forward,
         List<Vector3> vectors, 
         List<int> triangles, 
-        float width)
+        float width,
+        float recursionDepth)
     {
         var halfWidth = width / 2;
         var vertLeg = Mathf.Sqrt(Sq(width) - Sq(halfWidth));
@@ -45,6 +45,7 @@ public class FractalGenerator : MonoBehaviour
 
         var s = vectors.Count;
         vectors.Add(center + halfWidth * left + halfVert * back);
+        var bottomLeftPoint = center + halfWidth * left;
         vectors.Add(center + halfWidth * right + halfVert * back);
         vectors.Add(center + halfVert * forward);
         vectors.Add(center + up * vertLeg);
@@ -54,6 +55,12 @@ public class FractalGenerator : MonoBehaviour
             s + 0, s + 2, s + 3,
             s + 2, s + 1, s + 3,
             s + 0, s + 3, s + 1 });
+        
+        if (recursionDepth > 1)
+        {
+            var newDepth = recursionDepth - 1;
+            Draw(center, -up, back, vectors, triangles, width / 2, newDepth);
+        }
     }
 
     private static float Sq(float value)
