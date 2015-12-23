@@ -75,8 +75,16 @@ public class FractalGenerator : MonoBehaviour
             Draw(frontCent, -frontUp, frontForward, vectors, triangles, width / 2, newDepth, false);
 
             //Left side tri
+            var leftForward = top - bottomLeftMidPoint;
+            var leftCent = bottomLeftMidPoint + leftForward / 2;
+            var leftUp = Vector3.Cross(bottomTip - frontLeftPoint, leftForward);
+            Draw(leftCent, leftUp, leftForward, vectors, triangles, width / 2, newDepth, false);
 
             //Right side tri
+            var rightForward = top - bottomRightMidPoint;
+            var rightCent = bottomRightMidPoint + rightForward / 2;
+            var rightUp = Vector3.Cross(frontRightPoint - bottomTip, rightForward);
+            Draw(rightCent, rightUp, rightForward, vectors, triangles, width / 2, newDepth, false);
         }
     }
 
