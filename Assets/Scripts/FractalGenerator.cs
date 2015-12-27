@@ -19,7 +19,7 @@ public class FractalGenerator : MonoBehaviour
         var triangles = new List<int>();
         Draw(Vector3.zero, Vector3.up, Vector3.forward, vertices, triangles, BaseWidth, FractalIterations);
         mesh.vertices = vertices.ToArray();
-        mesh.triangles = triangles.ToArray(); 
+        mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
     }
@@ -42,7 +42,9 @@ public class FractalGenerator : MonoBehaviour
         forward.Normalize();
         var back = -forward;
         var left = -Vector3.Cross(up, forward);
+        left.Normalize();
         var right = Vector3.Cross(up, forward);
+        right.Normalize();
 
         var s = vectors.Count;
         var bottomFrontMidPoint = center + halfWidth * back;
@@ -54,7 +56,10 @@ public class FractalGenerator : MonoBehaviour
         var bottomLeftMidPoint = frontLeftPoint + (bottomTip - frontLeftPoint) / 2;
         var bottomRightMidPoint = bottomTip + (frontRightPoint - bottomTip) / 2;
         vectors.Add(bottomTip);
-        var top = center + up * vertLeg;
+
+        var dir = frontRightPoint - bottomLeftMidPoint;
+        dir.Normalize();
+        var top = bottomLeftMidPoint + dir * vertLeg / 3 + up * vertLeg;
         vectors.Add(top);
 
         triangles.AddRange(new List<int> {
