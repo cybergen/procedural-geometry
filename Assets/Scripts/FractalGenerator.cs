@@ -8,6 +8,7 @@ public class FractalGenerator : MonoBehaviour
     public int FractalIterations;
     public float BaseWidth;
     public bool SharpEdges;
+    public bool TriforceMode;
 
     public void CreateMesh()
     {
@@ -108,19 +109,44 @@ public class FractalGenerator : MonoBehaviour
             var frontForward = top - bottomFrontMidPoint;
             var frontCent = bottomFrontMidPoint + frontForward / 2;
             var frontUp = Vector3.Cross(frontRightPoint - frontLeftPoint, frontForward);
-            Draw(frontCent, -frontUp, frontForward, vectors, triangles, width / 2, newDepth, false);
+
+            if (!TriforceMode)
+            {
+                Draw(frontCent, -frontUp, frontForward, vectors, triangles, width / 2, newDepth, false);
+            }
+            else
+            {
+                frontCent = bottomFrontMidPoint + frontForward / 4.3f;
+                Draw(frontCent, -frontUp, -frontForward, vectors, triangles, width / 2, newDepth, false);
+            }
 
             //Left side tri
             var leftForward = top - bottomLeftMidPoint;
             var leftCent = bottomLeftMidPoint + leftForward / 2;
             var leftUp = Vector3.Cross(bottomTip - frontLeftPoint, leftForward);
-            Draw(leftCent, leftUp, leftForward, vectors, triangles, width / 2, newDepth, false);
+            if (!TriforceMode)
+            {
+                Draw(leftCent, leftUp, leftForward, vectors, triangles, width / 2, newDepth, false);
+            }
+            else
+            {
+                leftCent = bottomLeftMidPoint + leftForward / 4.3f;
+                Draw(leftCent, leftUp, -leftForward, vectors, triangles, width / 2, newDepth, false);
+            }
 
             //Right side tri
             var rightForward = top - bottomRightMidPoint;
             var rightCent = bottomRightMidPoint + rightForward / 2;
             var rightUp = Vector3.Cross(frontRightPoint - bottomTip, rightForward);
-            Draw(rightCent, rightUp, rightForward, vectors, triangles, width / 2, newDepth, false);
+            if (!TriforceMode)
+            {
+                Draw(rightCent, rightUp, rightForward, vectors, triangles, width / 2, newDepth, false);
+            }
+            else
+            {
+                rightCent = bottomRightMidPoint + rightForward / 4.3f;
+                Draw(rightCent, rightUp, -rightForward, vectors, triangles, width / 2, newDepth, false);
+            }
         }
     }
 
