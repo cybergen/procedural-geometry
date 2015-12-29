@@ -7,6 +7,7 @@ public class FractalGenerator : MonoBehaviour
 {
     public int FractalIterations;
     public float BaseWidth;
+    public bool SharpEdges;
 
     public void CreateMesh()
     {
@@ -38,20 +39,24 @@ public class FractalGenerator : MonoBehaviour
         var vertLeg = Mathf.Sqrt(Sq(width) - Sq(halfWidth));
         var halfVert = vertLeg / 2;
 
-        up.Normalize();
-        forward.Normalize();
         var back = -forward;
         var left = -Vector3.Cross(up, forward);
+        var right = -left;
+
+        up.Normalize();
+        back.Normalize();
+        forward.Normalize();
         left.Normalize();
-        var right = Vector3.Cross(up, forward);
         right.Normalize();
 
         var s = vectors.Count;
         var bottomFrontMidPoint = center + halfWidth * back;
-        var frontLeftPoint = center + halfWidth * left + halfVert * back;
+        var frontLeftPoint = bottomFrontMidPoint + halfWidth * left;
         vectors.Add(frontLeftPoint);
-        var frontRightPoint = center + halfWidth * right + halfVert * back;
+
+        var frontRightPoint = frontLeftPoint + halfWidth * 2 * right;
         vectors.Add(frontRightPoint);
+
         var bottomTip = center + halfVert * forward;
         var bottomLeftMidPoint = frontLeftPoint + (bottomTip - frontLeftPoint) / 2;
         var bottomRightMidPoint = bottomTip + (frontRightPoint - bottomTip) / 2;
@@ -62,11 +67,37 @@ public class FractalGenerator : MonoBehaviour
         var top = bottomLeftMidPoint + dir * vertLeg / 3 + up * vertLeg;
         vectors.Add(top);
 
-        triangles.AddRange(new List<int> {
-            s + 1, s + 2, s + 0,
-            s + 0, s + 2, s + 3,
-            s + 2, s + 1, s + 3,
-            s + 0, s + 3, s + 1 });
+        if (SharpEdges)
+        {
+            vectors.Add(frontLeftPoint);
+            vectors.Add(frontRightPoint);
+            vectors.Add(bottomTip);
+            vectors.Add(top);
+
+            vectors.Add(frontLeftPoint);
+            vectors.Add(frontRightPoint);
+            vectors.Add(bottomTip);
+            vectors.Add(top);
+
+            vectors.Add(frontLeftPoint);
+            vectors.Add(frontRightPoint);
+            vectors.Add(bottomTip);
+            vectors.Add(top);
+
+            triangles.AddRange(new List<int> {
+                s + 1, s + 2, s + 0,
+                s + 4, s + 6, s + 7,
+                s + 10, s + 9, s + 11,
+                s + 12, s + 15, s + 13 });
+        }
+        else
+        {
+            triangles.AddRange(new List<int> {
+                s + 1, s + 2, s + 0,
+                s + 0, s + 2, s + 3,
+                s + 2, s + 1, s + 3,
+                s + 0, s + 3, s + 1 });
+        }
         
         if (recursionDepth > 1)
         {
