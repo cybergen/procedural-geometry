@@ -12,11 +12,13 @@ public class FractalGenerator : MonoBehaviour
     public bool TriforceMode;
     public bool GrowByOne;
     public float AnimationTime;
+    public bool GrowTillEnd;
 
     private Action onAnimationComplete;
     private MeshData currentData;
     private float animationTimeElapsed = float.MaxValue;
     private Mesh mesh;
+    private bool growingTillEnd;
 
     private void Awake()
     {
@@ -83,8 +85,12 @@ public class FractalGenerator : MonoBehaviour
         var topNoY = bottomLeftMidPoint + dir * vertLeg / 3;
         var top = topNoY + up * vertLeg;
         md.verts.Add(top);
-        md.AnimationOrigins.Add(s + 3, topNoY);
-        md.AnimationTargets.Add(s + 3, top);
+
+        if (recursionDepth == 1)
+        {
+            md.AnimationOrigins.Add(s + 3, topNoY);
+            md.AnimationTargets.Add(s + 3, top);
+        }
 
         if (SharpEdges)
         {
@@ -93,22 +99,31 @@ public class FractalGenerator : MonoBehaviour
             md.verts.Add(bottomTip);
 
             md.verts.Add(top);
-            md.AnimationOrigins.Add(s+7, topNoY);
-            md.AnimationTargets.Add(s+7, top);
+            if (recursionDepth == 1)
+            {
+                md.AnimationOrigins.Add(s + 7, topNoY);
+                md.AnimationTargets.Add(s + 7, top);
+            }
             
             md.verts.Add(frontLeftPoint);
             md.verts.Add(frontRightPoint);
             md.verts.Add(bottomTip);
             md.verts.Add(top);
-            md.AnimationOrigins.Add(s + 11, topNoY);
-            md.AnimationTargets.Add(s + 11, top);
+            if (recursionDepth == 1)
+            {
+                md.AnimationOrigins.Add(s + 11, topNoY);
+                md.AnimationTargets.Add(s + 11, top);
+            }
 
             md.verts.Add(frontLeftPoint);
             md.verts.Add(frontRightPoint);
             md.verts.Add(bottomTip);
             md.verts.Add(top);
-            md.AnimationOrigins.Add(s + 15, topNoY);
-            md.AnimationTargets.Add(s + 15, top);
+            if (recursionDepth == 1)
+            {
+                md.AnimationOrigins.Add(s + 15, topNoY);
+                md.AnimationTargets.Add(s + 15, top);
+            }
 
             md.tris.AddRange(new List<int> {
                 s + 1, s + 2, s + 0,
@@ -183,6 +198,12 @@ public class FractalGenerator : MonoBehaviour
             GrowByOne = false;
             OnGrowOne();
         }
+        else if (GrowTillEnd)
+        {
+            GrowTillEnd = false;
+            growingTillEnd = true;
+            OnGrowOne();
+        }
 
         if (animationTimeElapsed < AnimationTime)
         {
@@ -198,6 +219,11 @@ public class FractalGenerator : MonoBehaviour
                 mesh.vertices = currentData.verts.ToArray();
                 mesh.RecalculateNormals();
                 mesh.RecalculateBounds();
+
+                if (growingTillEnd)
+                {
+                    OnGrowOne();
+                }
             }
             else
             {
@@ -218,7 +244,11 @@ public class FractalGenerator : MonoBehaviour
     private void OnGrowOne()
     {
         var md = new MeshData();
-        if (FractalIterations > 6) return;
+        if (FractalIterations > 6)
+        {
+            growingTillEnd = false;
+            return;
+        }
 
         FractalIterations++;
         animationTimeElapsed = 0f;
