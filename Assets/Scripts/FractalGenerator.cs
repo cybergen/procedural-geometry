@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
@@ -9,19 +10,34 @@ public class FractalGenerator : MonoBehaviour
     public float BaseWidth;
     public bool SharpEdges;
     public bool TriforceMode;
+    public bool GrowByOne;
+    public float AnimationTime;
+
+    private Action onAnimationComplete;
+    private MeshData currentData;
+    private float animationTimeElapsed = float.MaxValue;
+    private Mesh mesh;
+
+    private void Awake()
+    {
+        mesh = GetComponent<MeshFilter>().sharedMesh;
+    }
+
+    private void Start()
+    {
+        mesh = GetComponent<MeshFilter>().sharedMesh;
+    }
 
     public void CreateMesh()
     {
-        Debug.Log("Generating mesh");
-
-        var mesh = GetComponent<MeshFilter>().sharedMesh;
+        if (mesh == null) mesh = GetComponent<MeshFilter>().sharedMesh;
         mesh.Clear();
 
-        var vertices = new List<Vector3>();
-        var triangles = new List<int>();
-        Draw(Vector3.zero, Vector3.up, Vector3.forward, vertices, triangles, BaseWidth, FractalIterations);
-        mesh.vertices = vertices.ToArray();
-        mesh.triangles = triangles.ToArray();
+        var md = new MeshData();
+        Draw(Vector3.zero, Vector3.up, Vector3.forward, md, BaseWidth, FractalIterations);
+
+        mesh.vertices = md.verts.ToArray();
+        mesh.triangles = md.tris.ToArray();
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
     }
@@ -30,8 +46,7 @@ public class FractalGenerator : MonoBehaviour
         Vector3 center, 
         Vector3 up, 
         Vector3 forward,
-        List<Vector3> vectors, 
-        List<int> triangles, 
+        MeshData md, 
         float width,
         float recursionDepth,
         bool recurseBottom = true)
@@ -50,42 +65,52 @@ public class FractalGenerator : MonoBehaviour
         left.Normalize();
         right.Normalize();
 
-        var s = vectors.Count;
+        var s = md.verts.Count;
         var bottomFrontMidPoint = center + halfWidth * back;
         var frontLeftPoint = bottomFrontMidPoint + halfWidth * left;
-        vectors.Add(frontLeftPoint);
+        md.verts.Add(frontLeftPoint);
 
         var frontRightPoint = frontLeftPoint + halfWidth * 2 * right;
-        vectors.Add(frontRightPoint);
+        md.verts.Add(frontRightPoint);
 
         var bottomTip = center + halfVert * forward;
         var bottomLeftMidPoint = frontLeftPoint + (bottomTip - frontLeftPoint) / 2;
         var bottomRightMidPoint = bottomTip + (frontRightPoint - bottomTip) / 2;
-        vectors.Add(bottomTip);
+        md.verts.Add(bottomTip);
 
         var dir = frontRightPoint - bottomLeftMidPoint;
         dir.Normalize();
-        var top = bottomLeftMidPoint + dir * vertLeg / 3 + up * vertLeg;
-        vectors.Add(top);
+        var topNoY = bottomLeftMidPoint + dir * vertLeg / 3;
+        var top = topNoY + up * vertLeg;
+        md.verts.Add(top);
+        md.AnimationOrigins.Add(s + 3, topNoY);
+        md.AnimationTargets.Add(s + 3, top);
 
         if (SharpEdges)
         {
-            vectors.Add(frontLeftPoint);
-            vectors.Add(frontRightPoint);
-            vectors.Add(bottomTip);
-            vectors.Add(top);
+            md.verts.Add(frontLeftPoint);
+            md.verts.Add(frontRightPoint);
+            md.verts.Add(bottomTip);
 
-            vectors.Add(frontLeftPoint);
-            vectors.Add(frontRightPoint);
-            vectors.Add(bottomTip);
-            vectors.Add(top);
+            md.verts.Add(top);
+            md.AnimationOrigins.Add(s+7, topNoY);
+            md.AnimationTargets.Add(s+7, top);
+            
+            md.verts.Add(frontLeftPoint);
+            md.verts.Add(frontRightPoint);
+            md.verts.Add(bottomTip);
+            md.verts.Add(top);
+            md.AnimationOrigins.Add(s + 11, topNoY);
+            md.AnimationTargets.Add(s + 11, top);
 
-            vectors.Add(frontLeftPoint);
-            vectors.Add(frontRightPoint);
-            vectors.Add(bottomTip);
-            vectors.Add(top);
+            md.verts.Add(frontLeftPoint);
+            md.verts.Add(frontRightPoint);
+            md.verts.Add(bottomTip);
+            md.verts.Add(top);
+            md.AnimationOrigins.Add(s + 15, topNoY);
+            md.AnimationTargets.Add(s + 15, top);
 
-            triangles.AddRange(new List<int> {
+            md.tris.AddRange(new List<int> {
                 s + 1, s + 2, s + 0,
                 s + 4, s + 6, s + 7,
                 s + 10, s + 9, s + 11,
@@ -93,7 +118,7 @@ public class FractalGenerator : MonoBehaviour
         }
         else
         {
-            triangles.AddRange(new List<int> {
+            md.tris.AddRange(new List<int> {
                 s + 1, s + 2, s + 0,
                 s + 0, s + 2, s + 3,
                 s + 2, s + 1, s + 3,
@@ -103,7 +128,7 @@ public class FractalGenerator : MonoBehaviour
         if (recursionDepth > 1)
         {
             var newDepth = recursionDepth - 1;
-            if (recurseBottom) Draw(center, -up, forward, vectors, triangles, width / 2, newDepth, false);
+            if (recurseBottom) Draw(center, -up, forward, md, width / 2, newDepth, false);
 
             //Front tri
             var frontForward = top - bottomFrontMidPoint;
@@ -112,12 +137,12 @@ public class FractalGenerator : MonoBehaviour
 
             if (!TriforceMode)
             {
-                Draw(frontCent, -frontUp, frontForward, vectors, triangles, width / 2, newDepth, false);
+                Draw(frontCent, -frontUp, frontForward, md, width / 2, newDepth, false);
             }
             else
             {
                 frontCent = bottomFrontMidPoint + frontForward / 4.3f;
-                Draw(frontCent, -frontUp, -frontForward, vectors, triangles, width / 2, newDepth, false);
+                Draw(frontCent, -frontUp, -frontForward, md, width / 2, newDepth, false);
             }
 
             //Left side tri
@@ -126,12 +151,12 @@ public class FractalGenerator : MonoBehaviour
             var leftUp = Vector3.Cross(bottomTip - frontLeftPoint, leftForward);
             if (!TriforceMode)
             {
-                Draw(leftCent, leftUp, leftForward, vectors, triangles, width / 2, newDepth, false);
+                Draw(leftCent, leftUp, leftForward, md, width / 2, newDepth, false);
             }
             else
             {
                 leftCent = bottomLeftMidPoint + leftForward / 4.3f;
-                Draw(leftCent, leftUp, -leftForward, vectors, triangles, width / 2, newDepth, false);
+                Draw(leftCent, leftUp, -leftForward, md, width / 2, newDepth, false);
             }
 
             //Right side tri
@@ -140,18 +165,87 @@ public class FractalGenerator : MonoBehaviour
             var rightUp = Vector3.Cross(frontRightPoint - bottomTip, rightForward);
             if (!TriforceMode)
             {
-                Draw(rightCent, rightUp, rightForward, vectors, triangles, width / 2, newDepth, false);
+                Draw(rightCent, rightUp, rightForward, md, width / 2, newDepth, false);
             }
             else
             {
                 rightCent = bottomRightMidPoint + rightForward / 4.3f;
-                Draw(rightCent, rightUp, -rightForward, vectors, triangles, width / 2, newDepth, false);
+                Draw(rightCent, rightUp, -rightForward, md, width / 2, newDepth, false);
             }
         }
+    }
+
+    private void Update()
+    {
+        var delta = Time.deltaTime;
+        if (GrowByOne)
+        {
+            GrowByOne = false;
+            OnGrowOne();
+        }
+
+        if (animationTimeElapsed < AnimationTime)
+        {
+            animationTimeElapsed += delta;
+
+            if (animationTimeElapsed >= AnimationTime)
+            {
+                foreach (var key in currentData.AnimationTargets.Keys)
+                {
+                    currentData.verts[key] = currentData.AnimationTargets[key];
+                }
+
+                mesh.vertices = currentData.verts.ToArray();
+                mesh.RecalculateNormals();
+                mesh.RecalculateBounds();
+            }
+            else
+            {
+                foreach (var key in currentData.AnimationTargets.Keys)
+                {
+                    var start = currentData.AnimationOrigins[key];
+                    var end = currentData.AnimationTargets[key];
+                    currentData.verts[key] = Vector3.Lerp(start, end, animationTimeElapsed / AnimationTime);
+                }
+
+                mesh.vertices = currentData.verts.ToArray();
+                mesh.RecalculateNormals();
+                mesh.RecalculateBounds();
+            }
+        }
+    }
+
+    private void OnGrowOne()
+    {
+        var md = new MeshData();
+        if (FractalIterations > 6) return;
+
+        FractalIterations++;
+        animationTimeElapsed = 0f;
+        currentData = md;
+
+        Draw(Vector3.zero, Vector3.up, Vector3.forward, md, BaseWidth, FractalIterations);
+
+        foreach (var key in md.AnimationOrigins.Keys)
+        {
+            md.verts[key] = md.AnimationOrigins[key];
+        }
+
+        mesh.vertices = md.verts.ToArray();
+        mesh.triangles = md.tris.ToArray();
+        mesh.RecalculateNormals();
     }
 
     private static float Sq(float value)
     {
         return value * value;
+    }
+
+    private class MeshData
+    {
+        public List<Vector3> verts = new List<Vector3>();
+        public List<int> tris = new List<int>();
+        public Dictionary<int, Vector3> AnimationTargets = new Dictionary<int, Vector3>();
+        public Dictionary<int, Vector3> AnimationOrigins = new Dictionary<int, Vector3>();
     }
 }
