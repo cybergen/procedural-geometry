@@ -202,6 +202,7 @@ public class FractalGenerator : MonoBehaviour
         {
             GrowTillEnd = false;
             growingTillEnd = true;
+            FractalIterations = 0;
             OnGrowOne();
         }
 
