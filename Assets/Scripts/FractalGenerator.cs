@@ -11,14 +11,17 @@ public class FractalGenerator : MonoBehaviour
     public bool SharpEdges;
     public bool TriforceMode;
     public bool GrowByOne;
+    public bool ShrinkByOne;
     public float AnimationTime;
     public bool GrowTillEnd;
+    public bool ShrinkTillEnd;
 
     private Action onAnimationComplete;
     private MeshData currentData;
     private float animationTimeElapsed = float.MaxValue;
     private Mesh mesh;
     private bool growingTillEnd;
+    private bool shrinkingTillEnd;
 
     private void Awake()
     {
@@ -198,12 +201,22 @@ public class FractalGenerator : MonoBehaviour
             GrowByOne = false;
             OnGrowOne();
         }
+        else if (ShrinkByOne)
+        {
+            ShrinkByOne = false;
+            OnShrinkOne();
+        }
         else if (GrowTillEnd)
         {
             GrowTillEnd = false;
             growingTillEnd = true;
-            FractalIterations = 0;
             OnGrowOne();
+        }
+        else if (ShrinkTillEnd)
+        {
+            ShrinkTillEnd = false;
+            shrinkingTillEnd = true;
+            OnShrinkOne();
         }
 
         if (animationTimeElapsed < AnimationTime)
@@ -221,9 +234,9 @@ public class FractalGenerator : MonoBehaviour
                 mesh.RecalculateNormals();
                 mesh.RecalculateBounds();
 
-                if (growingTillEnd)
+                if (onAnimationComplete != null)
                 {
-                    OnGrowOne();
+                    onAnimationComplete();
                 }
             }
             else
@@ -253,12 +266,15 @@ public class FractalGenerator : MonoBehaviour
         if (FractalIterations > 6)
         {
             growingTillEnd = false;
+            OnGrowthFinished();
             return;
         }
 
         FractalIterations++;
         animationTimeElapsed = 0f;
         currentData = md;
+
+        onAnimationComplete += OnOneGrowthComplete;
 
         Draw(Vector3.zero, Vector3.up, Vector3.forward, md, BaseWidth, FractalIterations);
 
@@ -270,6 +286,62 @@ public class FractalGenerator : MonoBehaviour
         mesh.vertices = md.verts.ToArray();
         mesh.triangles = md.tris.ToArray();
         mesh.RecalculateNormals();
+    }
+
+    private void OnOneGrowthComplete()
+    {
+        onAnimationComplete -= OnOneGrowthComplete;
+        if (growingTillEnd) OnGrowOne();
+    }
+
+    private void OnShrinkOne()
+    {
+        var md = new MeshData();
+        if (FractalIterations == 1)
+        {
+            shrinkingTillEnd = false;
+            OnShrinkFinished();
+            return;
+        }
+
+        onAnimationComplete += OnOneShrinkComplete;
+
+        animationTimeElapsed = 0f;
+        currentData = md;
+
+        Draw(Vector3.zero, Vector3.up, Vector3.forward, md, BaseWidth, FractalIterations);
+
+        var tempTarget = md.AnimationTargets;
+        md.AnimationTargets = md.AnimationOrigins;
+        md.AnimationOrigins = tempTarget;
+
+        foreach (var key in md.AnimationOrigins.Keys)
+        {
+            md.verts[key] = md.AnimationOrigins[key];
+        }
+
+        mesh.vertices = md.verts.ToArray();
+        mesh.triangles = md.tris.ToArray();
+        mesh.RecalculateNormals();
+    }
+
+    private void OnOneShrinkComplete()
+    {
+        onAnimationComplete -= OnOneShrinkComplete;
+        FractalIterations--;
+        CreateMesh();
+
+        if (shrinkingTillEnd) OnShrinkOne();
+    }
+
+    private void OnGrowthFinished()
+    {
+        Debug.Log("Finished growing");
+    }
+
+    private void OnShrinkFinished()
+    {
+        Debug.Log("Finished shrinking");
     }
 
     private static float Sq(float value)
