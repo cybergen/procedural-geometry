@@ -15,6 +15,8 @@ public class FractalGenerator : MonoBehaviour
     public float AnimationTime;
     public bool GrowTillEnd;
     public bool ShrinkTillEnd;
+    public bool CycleForever;
+    public bool VaryTriforceMode;
 
     private Action onAnimationComplete;
     private MeshData currentData;
@@ -336,12 +338,19 @@ public class FractalGenerator : MonoBehaviour
 
     private void OnGrowthFinished()
     {
-        Debug.Log("Finished growing");
+        if (CycleForever)
+        {
+            ShrinkTillEnd = true;
+        }
     }
 
     private void OnShrinkFinished()
     {
-        Debug.Log("Finished shrinking");
+        if (CycleForever)
+        {
+            if (VaryTriforceMode) TriforceMode = !TriforceMode;
+            GrowTillEnd = true;
+        }
     }
 
     private static float Sq(float value)
