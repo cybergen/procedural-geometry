@@ -82,8 +82,8 @@ public class FractalGenerator : MonoBehaviour
 
         var dir = frontRightPoint - bottomLeftMidPoint;
         dir.Normalize();
-        var topNoY = bottomLeftMidPoint + dir * vertLeg / 3;
-        var top = topNoY + up * vertLeg;
+        var topNoY = bottomLeftMidPoint + dir * vertLeg / 3 - up * 0.1f;
+        var top = bottomLeftMidPoint + dir * vertLeg / 3 + up * vertLeg;
         md.verts.Add(top);
 
         if (recursionDepth == 1)
