@@ -82,7 +82,7 @@ public class FractalGenerator : MonoBehaviour
 
         var dir = frontRightPoint - bottomLeftMidPoint;
         dir.Normalize();
-        var topNoY = bottomLeftMidPoint + dir * vertLeg / 3;
+        var topNoY = bottomLeftMidPoint + dir * vertLeg / 3 - up * 0.01f;
         var top = topNoY + up * vertLeg;
         md.verts.Add(top);
 
@@ -232,7 +232,12 @@ public class FractalGenerator : MonoBehaviour
                 {
                     var start = currentData.AnimationOrigins[key];
                     var end = currentData.AnimationTargets[key];
-                    currentData.verts[key] = Vector3.Lerp(start, end, animationTimeElapsed / AnimationTime);
+
+                    var x = Quartic(animationTimeElapsed, start.x, end.x - start.x, AnimationTime);
+                    var y = Quartic(animationTimeElapsed, start.y, end.y - start.y, AnimationTime);
+                    var z = Quartic(animationTimeElapsed, start.z, end.z - start.z, AnimationTime);
+
+                    currentData.verts[key] = new Vector3(x, y, z);
                 }
 
                 mesh.vertices = currentData.verts.ToArray();
@@ -270,6 +275,12 @@ public class FractalGenerator : MonoBehaviour
     private static float Sq(float value)
     {
         return value * value;
+    }
+
+    private static float Quartic(float t, float b, float c, float d)
+    {
+        t /= d;
+        return c * t * t * t * t + b;
     }
 
     private class MeshData
