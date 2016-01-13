@@ -51,7 +51,6 @@ public class TriforceGenerator : IMeshDataGenerator
             md.AnimationTargets.Add(s + 3, top);
         }
 
-
         md.verts.Add(frontLeftPoint);
         md.verts.Add(frontRightPoint);
         md.verts.Add(bottomTip);
