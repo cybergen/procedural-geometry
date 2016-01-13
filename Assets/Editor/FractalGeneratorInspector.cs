@@ -10,7 +10,7 @@ public class FractalGeneratorInspector : Editor
 
         if (GUILayout.Button("Generate Mesh"))
         {
-            (target as FractalGenerator).CreateMesh();
+            (target as FractalGenerator).Initialize();
         }
     }
 }
