@@ -178,7 +178,8 @@ public class FractalGenerator : MonoBehaviour
 
         onAnimationComplete += OnOneGrowthComplete;
 
-        generators[generatorIndex].Draw(Vector3.zero, Vector3.up, Vector3.forward, md, BaseWidth, FractalIterations);
+        var targetWidth = GeneratorList[generatorIndex] == GeneratorType.Cube ? BaseWidth / 2.5f : BaseWidth;
+        generators[generatorIndex].Draw(Vector3.zero, Vector3.up, Vector3.forward, md, targetWidth, FractalIterations);
 
         foreach (var key in md.AnimationOrigins.Keys)
         {
@@ -211,7 +212,8 @@ public class FractalGenerator : MonoBehaviour
         animationTimeElapsed = 0f;
         currentData = md;
 
-        generators[generatorIndex].Draw(Vector3.zero, Vector3.up, Vector3.forward, md, BaseWidth, FractalIterations);
+        var targetWidth = GeneratorList[generatorIndex] == GeneratorType.Cube ? BaseWidth / 2.5f : BaseWidth;
+        generators[generatorIndex].Draw(Vector3.zero, Vector3.up, Vector3.forward, md, targetWidth, FractalIterations);
 
         var tempTarget = md.AnimationTargets;
         md.AnimationTargets = md.AnimationOrigins;
