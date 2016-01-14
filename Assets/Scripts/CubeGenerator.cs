@@ -109,5 +109,36 @@ public class CubeGenerator : IMeshDataGenerator
             //top face 2
             s + 35, s + 34, s + 33
         });
+
+        if (depth > 1)
+        {
+            var newDepth = depth - 1;
+            var newWidth = width / 2;
+
+            if (bottom)
+            {
+                Draw(center, -up, -forward, md, newWidth, newDepth, false);
+            }
+
+            //Left side
+            var point = center - left * halfWidth + up * halfWidth;
+            Draw(point, right, up, md, newWidth, newDepth, false);
+
+            //Right side
+            point += left * width;
+            Draw(point, left, up, md, newWidth, newDepth, false);
+
+            //Front side
+            point = center - forward * halfWidth + up * halfWidth;
+            Draw(point, -forward, up, md, newWidth, newDepth, false);
+
+            //Back side
+            point += forward * width;
+            Draw(point, forward, -up, md, newWidth, newDepth, false);
+
+            //Top side
+            point = center + up * width;
+            Draw(point, up, forward, md, newWidth, newDepth, false);
+        }
     }
 }
