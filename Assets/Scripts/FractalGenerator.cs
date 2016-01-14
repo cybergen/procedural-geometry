@@ -37,7 +37,7 @@ public class FractalGenerator : MonoBehaviour
     {
         get
         {
-            return GeneratorList[generatorIndex] == GeneratorType.Cube ? 5 : 6;
+            return GeneratorList[generatorIndex] == GeneratorType.Cube ? 4 : 5;
         }
     }
 
