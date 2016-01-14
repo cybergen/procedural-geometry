@@ -33,6 +33,13 @@ public class FractalGenerator : MonoBehaviour
     private bool shrinkingTillEnd;
     private List<IMeshDataGenerator> generators;
     private int generatorIndex = 0;
+    private int maxDepth
+    {
+        get
+        {
+            return GeneratorList[generatorIndex] == GeneratorType.Cube ? 5 : 6;
+        }
+    }
 
     private void Awake()
     {
@@ -158,7 +165,7 @@ public class FractalGenerator : MonoBehaviour
     private void OnGrowOne()
     {
         var md = new MeshData();
-        if (FractalIterations > 6)
+        if (FractalIterations > maxDepth)
         {
             growingTillEnd = false;
             OnGrowthFinished();

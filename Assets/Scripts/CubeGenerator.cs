@@ -70,13 +70,13 @@ public class CubeGenerator : IMeshDataGenerator
         //front face 2 = s + 27
         md.verts.Add(bottomFrontLeft);
         md.verts.Add(topFrontLeft);
-        md.verts.Add(topFrontRight);
+        md.verts.Add(topFrontRight);        
 
         //top face 1 = s + 30
         md.verts.Add(topBackLeft);
         md.verts.Add(topBackRight);
         md.verts.Add(topFrontLeft);
-
+            
         //top face 2 = s + 33
         md.verts.Add(topBackRight);
         md.verts.Add(topFrontRight);
@@ -139,6 +139,55 @@ public class CubeGenerator : IMeshDataGenerator
             //Top side
             point = center + up * width;
             Draw(point, up, forward, md, newWidth, newDepth, false);
+        }
+
+        if (depth == 1)
+        {
+            md.AnimationOrigins.Add(s + 7, bottomBackLeft);
+            md.AnimationTargets.Add(s + 7, topBackLeft);
+
+            md.AnimationOrigins.Add(s + 9, bottomBackLeft);
+            md.AnimationTargets.Add(s + 9, topBackLeft);
+            md.AnimationOrigins.Add(s + 10, bottomFrontLeft);
+            md.AnimationTargets.Add(s + 10, topFrontLeft);
+
+            md.AnimationOrigins.Add(s + 13, bottomBackRight);
+            md.AnimationTargets.Add(s + 13, topBackRight);
+
+            md.AnimationOrigins.Add(s + 15, bottomBackRight);
+            md.AnimationTargets.Add(s + 15, topBackRight);
+            md.AnimationOrigins.Add(s + 16, bottomBackLeft);
+            md.AnimationTargets.Add(s + 16, topBackLeft);
+
+            md.AnimationOrigins.Add(s + 20, bottomBackRight);
+            md.AnimationTargets.Add(s + 20, topBackRight);
+
+            md.AnimationOrigins.Add(s + 22, bottomFrontRight);
+            md.AnimationTargets.Add(s + 22, topFrontRight);
+            md.AnimationOrigins.Add(s + 23, bottomBackRight);
+            md.AnimationTargets.Add(s + 23, topBackRight);
+
+            md.AnimationOrigins.Add(s + 26, bottomFrontRight);
+            md.AnimationTargets.Add(s + 26, topFrontRight);
+
+            md.AnimationOrigins.Add(s + 28, bottomFrontLeft);
+            md.AnimationTargets.Add(s + 28, topFrontLeft);
+            md.AnimationOrigins.Add(s + 29, bottomFrontRight);
+            md.AnimationTargets.Add(s + 29, topFrontRight);
+
+            md.AnimationOrigins.Add(s + 30, bottomBackLeft);
+            md.AnimationOrigins.Add(s + 31, bottomBackRight);
+            md.AnimationOrigins.Add(s + 32, bottomFrontLeft);
+            md.AnimationTargets.Add(s + 30, topBackLeft);
+            md.AnimationTargets.Add(s + 31, topBackRight);
+            md.AnimationTargets.Add(s + 32, topFrontLeft);
+
+            md.AnimationOrigins.Add(s + 33, bottomBackRight);
+            md.AnimationOrigins.Add(s + 34, bottomFrontRight);
+            md.AnimationOrigins.Add(s + 35, bottomFrontLeft);
+            md.AnimationTargets.Add(s + 33, topBackRight);
+            md.AnimationTargets.Add(s + 34, topFrontRight);
+            md.AnimationTargets.Add(s + 35, topFrontLeft);
         }
     }
 }

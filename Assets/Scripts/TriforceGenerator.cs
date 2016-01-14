@@ -99,11 +99,9 @@ public class TriforceGenerator : IMeshDataGenerator
             var frontCent = bottomFrontMidPoint + frontForward / 2;
             var frontUp = Vector3.Cross(frontRightPoint - frontLeftPoint, frontForward);
 
-
             frontCent = bottomFrontMidPoint + frontForward / 4.3f;
             Draw(frontCent, -frontUp, -frontForward, md, width / 2, newDepth, false);
-
-
+            
             //Left side tri
             var leftForward = top - bottomLeftMidPoint;
             var leftCent = bottomLeftMidPoint + leftForward / 2;
@@ -111,8 +109,7 @@ public class TriforceGenerator : IMeshDataGenerator
 
             leftCent = bottomLeftMidPoint + leftForward / 4.3f;
             Draw(leftCent, leftUp, -leftForward, md, width / 2, newDepth, false);
-
-
+            
             //Right side tri
             var rightForward = top - bottomRightMidPoint;
             var rightCent = bottomRightMidPoint + rightForward / 2;
