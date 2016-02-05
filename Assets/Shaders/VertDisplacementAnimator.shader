@@ -39,9 +39,9 @@
 
         void disp (inout appdata v)
         {
-        	float displace = tex2Dlod(_Displacement, float4(v.texcoord.xy,0,0));
+        	float4 displace = tex2Dlod(_Displacement, float4(v.texcoord.xy,0,0));
             float4 norm = tex2Dlod(_Normal, float4(v.texcoord.xy, 0, 0));
-            v.vertex.xyz += disp.xyz * _Scale;
+            v.vertex.xyz += displace.xyz * _Scale;
             v.normal = norm;
         }
 
