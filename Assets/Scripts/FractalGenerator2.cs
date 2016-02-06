@@ -2,28 +2,30 @@ using UnityEngine;
 
 public class FractalGenerator2 : MonoBehaviour
 {
-    public ComputeShader Shader;
+    public ComputeShader TopologyCompute;
+    public ComputeShader NormalCompute;
     public int FractalIterations;
     public Material AttachedMaterial;
 
     public void Generate()
     {
-        var kernel = Shader.FindKernel("CSMain");
+        var kernel = TopologyCompute.FindKernel("CSMain");
+        var normKernel = NormalCompute.FindKernel("CSMain");
 
         var displace = new RenderTexture(256, 256, 24);
         displace.enableRandomWrite = true;
         displace.Create();
-
         var normal = new RenderTexture(256, 256, 24);
         normal.enableRandomWrite = true;
         normal.Create();
 
-        Shader.SetTexture(kernel, "Displace", displace);
-        Shader.SetTexture(kernel, "Normal", normal);
+        TopologyCompute.SetTexture(kernel, "Displace", displace);
+        TopologyCompute.Dispatch(kernel, 256 / 8, 256 / 8, 1);
 
-        Shader.Dispatch(kernel, 256 / 8, 256 / 8, 1);
+        NormalCompute.SetTexture(normKernel, "Normal", normal);
+        NormalCompute.Dispatch(normKernel, 256 / 8, 256 / 8, 1);
 
-        AttachedMaterial.SetTexture("Displacement", displace);
-        AttachedMaterial.SetTexture("Normal", normal);
+        AttachedMaterial.SetTexture("_Displacement", displace);
+        AttachedMaterial.SetTexture("_Normal", normal);
     }
 }
