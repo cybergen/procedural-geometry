@@ -9,6 +9,7 @@ UnityVS/
 ProjectSettings/
 UnityVS.meta
 sysinfo.txt
+.vs/
  
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
