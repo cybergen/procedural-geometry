@@ -8,9 +8,9 @@ public class FractalGeneratorInspector : Editor
     {
         DrawDefaultInspector();
 
-        if (GUILayout.Button("Generate Mesh"))
+        if (GUILayout.Button("Generate"))
         {
-            (target as FractalGenerator).Initialize();
+            (target as Generatable).Generate();
         }
     }
 }

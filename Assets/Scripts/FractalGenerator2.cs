@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class FractalGenerator2 : MonoBehaviour
+public class FractalGenerator2 : Generatable
 {
     public ComputeShader TopologyCompute;
     public ComputeShader NormalCompute;
     public int FractalIterations;
     public Material AttachedMaterial;
 
-    public void Generate()
+    public override void Generate()
     {
         var kernel = TopologyCompute.FindKernel("CSMain");
         var normKernel = NormalCompute.FindKernel("CSMain");

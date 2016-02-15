@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
-public class FractalGenerator : MonoBehaviour
+public class FractalGenerator : Generatable
 {
     public enum GeneratorType
     {
@@ -77,10 +77,10 @@ public class FractalGenerator : MonoBehaviour
     public void Initialize()
     {        
         SetGenerators();
-        CreateMesh();   
+        Generate();   
     }   
 
-    public void CreateMesh()
+    public override void Generate()
     {
         if (generators.Count < 1) return;
         if (mesh == null) mesh = GetComponent<MeshFilter>().sharedMesh;
@@ -233,7 +233,7 @@ public class FractalGenerator : MonoBehaviour
     {
         onAnimationComplete -= OnOneShrinkComplete;
         FractalIterations--;
-        CreateMesh();
+        Generate();
 
         if (shrinkingTillEnd) OnShrinkOne();
     }
