@@ -43,3 +43,26 @@ Cmd: compileSnippet
   api=4 type=2 insize=7762 outsize=1542 kw=DIRECTIONAL SHADOWS_OFF pd= ok=1
 Cmd: compileSnippet
   api=4 type=3 insize=7762 outsize=5344 kw=DIRECTIONAL SHADOWS_OFF pd= ok=1
+Cmd: compileCompute
+  api=4 insize=227 outsize=285 ok=1
+Cmd: compileCompute
+  api=4 insize=227 outsize=285 ok=1
+Cmd: compileCompute
+  api=15 insize=227 outsize=473 ok=1
+Cmd: compileCompute
+  api=9 insize=227 outsize=437 ok=1
+Cmd: compileCompute
+  error: 2 plat 4 at NormalCompute.compute(17): invalid type for index - index must be a scalar, or a vector with the correct number of dimensions
+  api=4 insize=1085 outsize=29 ok=0
+Cmd: compileCompute
+  error: 2 plat 4 at NormalCompute.compute(17): invalid type for index - index must be a scalar, or a vector with the correct number of dimensions
+  api=4 insize=1085 outsize=29 ok=0
+Cmd: compileCompute
+  error: 2 plat 4 at NormalCompute.compute(17): invalid type for index - index must be a scalar, or a vector with the correct number of dimensions
+  api=15 insize=1085 outsize=29 ok=0
+Cmd: compileCompute
+  error: 2 plat 4 at NormalCompute.compute(17): invalid type for index - index must be a scalar, or a vector with the correct number of dimensions
+  api=9 insize=1085 outsize=29 ok=0
+Cmd: compileCompute
+  error: 2 plat 4 at NormalCompute.compute(17): invalid type for index - index must be a scalar, or a vector with the correct number of dimensions
+  api=4 insize=1085 outsize=29 ok=0

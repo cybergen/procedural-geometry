@@ -22,6 +22,7 @@ public class FractalGenerator2 : Generatable
         TopologyCompute.SetTexture(kernel, "Displace", displace);
         TopologyCompute.Dispatch(kernel, 256 / 8, 256 / 8, 1);
 
+        NormalCompute.SetTexture(normKernel, "Vertex", displace);
         NormalCompute.SetTexture(normKernel, "Normal", normal);
         NormalCompute.Dispatch(normKernel, 256 / 8, 256 / 8, 1);
 
