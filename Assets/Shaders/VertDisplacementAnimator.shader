@@ -42,7 +42,6 @@
         	float4 displace = tex2Dlod(_Displacement, float4(v.texcoord.xy,0,0)) - 0.5;
             float4 norm = tex2Dlod(_Normal, float4(v.texcoord.xy, 0, 0)) - 0.5;
             v.vertex.xyz += displace.xyz * _Scale * 2;
-            norm -= 0.5;
             normalize(norm);
             v.normal = norm;
         }
