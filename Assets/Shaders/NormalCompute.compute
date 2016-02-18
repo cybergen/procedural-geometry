@@ -1,49 +1,62 @@
 ﻿#pragma kernel CSMain
 
-RWTexture2D<float4> Vertex;
+Texture2D<float4> Vertex;
 RWTexture2D<float4> Normal;
 
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
-	float4 normal = float4(1, 1, 1, 1);
-    Normal[id.xy] = normal / 2 + 0.5;
-
-	float4 centerVert = Vertex[id.xy];
-	float4 vertTwo = float4(0, 0, 0, 0);
-	float4 vertThree = float4(0, 0, 0, 0);
+	float3 centerVert = Vertex[id.xy].xyz;
+	float3 vertTwo = float3(0, 0, 0);
+	float3 vertThree = float3(0, 0, 0);
+	uint2 temp = id.xy;
     if (id.x == 0) 
-    { 
-    	vertTwo = Vertex[id.x + 1, id.y];
+    {
+    	temp.x += 1;
+    	vertTwo = Vertex[temp];
+    	temp.x -= 1;
     	if (id.y < 256)
     	{
-    		vertThree = Vertex[id.x, id.y + 1];
+    		temp.y += 1;
+    		vertThree = Vertex[temp];
+    		temp.y -= 1;
     	}
     	else
     	{
-    		vectThree = Vertex[id.x, id.y - 1];
+    		temp.y -= 1;
+    		vertThree = Vertex[temp];
+    		temp.y += 1;
     	}
     }
     else if (id.x > 0 && id.x < 256)
     {
-    	vertTwo = Vertex[id.x + 1, id.y];
-    	vertThree = Vertex[id.x - 1,  id.y];
+		temp.x += 1;
+    	vertTwo = Vertex[temp];
+    	temp.x -= 2;
+    	vertThree = Vertex[temp];
+    	temp.x += 1;
     }
     else
     {
-    	vertTwo = Vertex[id.x - 1, id.y];
+    	temp.x -= 1;
+    	vertTwo = Vertex[temp];
+    	temp.x += 1;
     	if (id.y < 256)
     	{
-    		vertThree = Vertex[id.x, id.y + 1];
+    		temp.y += 1;
+    		vertThree = Vertex[temp];
+    		temp.y -= 1;
     	}
     	else
     	{
-    		vectThree = Vertex[id.x, id.y - 1];
+    		temp.y -= 1;
+    		vertThree = Vertex[temp];
+    		temp.y += 1;
     	}
     }
 
-   	float4 crossOne = cross(centerVert, vertTwo);
-   	float4 crossTwo = cross(centerVert, vertThree);
-   	float4 norm = normalize((crossOne + crossTwo) / 2);
-   	Normal[id.xy] = norm / 2 + 0.5;
+   	float3 crossOne = cross(centerVert, vertTwo);
+   	float3 crossTwo = cross(centerVert, vertThree);
+   	float3 norm = normalize((crossOne + crossTwo) / 2);
+   	Normal[id.xy] = float4((norm / 2 + 0.5).xyz, 0);
 }

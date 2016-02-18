@@ -1,68 +1,51 @@
 Base path: C:/Program Files/Unity/Editor/Data
-Pipe name: \\.\pipe\UnityShaderCompiler-64bit-1-10800
+Pipe name: \\.\pipe\UnityShaderCompiler-64bit-1-10952
 Cmd: getPlatforms
-Cmd: preprocess
-  insize=1984 outsize=1690 ok=1
-Cmd: compileSnippet
-  api=4 type=0 insize=10155 outsize=1128 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=1 insize=10155 outsize=11008 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=2 insize=10155 outsize=1542 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=3 insize=10155 outsize=5970 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=0 insize=7762 outsize=1128 kw=POINT SHADOWS_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=1 insize=7762 outsize=6969 kw=POINT SHADOWS_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=2 insize=7762 outsize=1542 kw=POINT SHADOWS_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=3 insize=7762 outsize=5344 kw=POINT SHADOWS_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=0 insize=10133 outsize=1128 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=1 insize=10133 outsize=3045 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=2 insize=10133 outsize=1542 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=3 insize=10133 outsize=6108 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF HDR_LIGHT_PREPASS_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=0 insize=5804 outsize=1128 kw=SHADOWS_DEPTH pd= ok=1
-Cmd: compileSnippet
-  api=4 type=1 insize=5804 outsize=534 kw=SHADOWS_DEPTH pd= ok=1
-Cmd: compileSnippet
-  api=4 type=2 insize=5804 outsize=1542 kw=SHADOWS_DEPTH pd= ok=1
-Cmd: compileSnippet
-  api=4 type=3 insize=5804 outsize=5239 kw=SHADOWS_DEPTH pd= ok=1
-Cmd: compileSnippet
-  api=4 type=0 insize=7762 outsize=1128 kw=DIRECTIONAL SHADOWS_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=1 insize=7762 outsize=6189 kw=DIRECTIONAL SHADOWS_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=2 insize=7762 outsize=1542 kw=DIRECTIONAL SHADOWS_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=3 insize=7762 outsize=5344 kw=DIRECTIONAL SHADOWS_OFF pd= ok=1
 Cmd: compileCompute
-  api=4 insize=227 outsize=285 ok=1
+  error: 1 plat 4 at NormalCompute.compute(16): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(21): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(27): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(34): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(36): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(42): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(47): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(53): implicit truncation of vector type
+  api=4 insize=1236 outsize=1513 ok=1
 Cmd: compileCompute
-  api=4 insize=227 outsize=285 ok=1
+  error: 1 plat 4 at NormalCompute.compute(16): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(21): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(27): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(34): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(36): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(42): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(47): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(53): implicit truncation of vector type
+  api=4 insize=1236 outsize=1513 ok=1
 Cmd: compileCompute
-  api=15 insize=227 outsize=473 ok=1
+  error: 1 plat 4 at NormalCompute.compute(16): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(21): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(27): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(34): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(36): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(42): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(47): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(53): implicit truncation of vector type
+  api=15 insize=1236 outsize=2693 ok=1
 Cmd: compileCompute
-  api=9 insize=227 outsize=437 ok=1
-Cmd: compileCompute
-  error: 2 plat 4 at NormalCompute.compute(17): invalid type for index - index must be a scalar, or a vector with the correct number of dimensions
-  api=4 insize=1085 outsize=29 ok=0
-Cmd: compileCompute
-  error: 2 plat 4 at NormalCompute.compute(17): invalid type for index - index must be a scalar, or a vector with the correct number of dimensions
-  api=4 insize=1085 outsize=29 ok=0
-Cmd: compileCompute
-  error: 2 plat 4 at NormalCompute.compute(17): invalid type for index - index must be a scalar, or a vector with the correct number of dimensions
-  api=15 insize=1085 outsize=29 ok=0
-Cmd: compileCompute
-  error: 2 plat 4 at NormalCompute.compute(17): invalid type for index - index must be a scalar, or a vector with the correct number of dimensions
-  api=9 insize=1085 outsize=29 ok=0
-Cmd: compileCompute
-  error: 2 plat 4 at NormalCompute.compute(17): invalid type for index - index must be a scalar, or a vector with the correct number of dimensions
-  api=4 insize=1085 outsize=29 ok=0
+  error: 1 plat 4 at NormalCompute.compute(16): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(21): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(27): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(34): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(36): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(42): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(47): implicit truncation of vector type
+  error: 1 plat 4 at NormalCompute.compute(53): implicit truncation of vector type
+  api=9 insize=1236 outsize=2717 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=7762 outsize=1128 kw=SPOT SHADOWS_OFF pd= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=7762 outsize=7481 kw=SPOT SHADOWS_OFF pd= ok=1
+Cmd: compileSnippet
+  api=4 type=2 insize=7762 outsize=1542 kw=SPOT SHADOWS_OFF pd= ok=1
+Cmd: compileSnippet
+  api=4 type=3 insize=7762 outsize=5344 kw=SPOT SHADOWS_OFF pd= ok=1
