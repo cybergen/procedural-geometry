@@ -55,8 +55,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     	}
     }
 
-   	float3 crossOne = cross(centerVert, vertTwo);
-   	float3 crossTwo = cross(centerVert, vertThree);
-   	float3 norm = normalize((crossOne + crossTwo) / 2);
+   	float3 crossOne = cross(vertTwo - centerVert, vertThree - centerVert);
+   	float3 norm = normalize(crossOne);
    	Normal[id.xy] = float4((norm / 2 + 0.5).xyz, 0);
 }
