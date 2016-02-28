@@ -60,7 +60,11 @@ public class SpiralGenerator : Generatable
         var bytes = tex.EncodeToPNG();
         DestroyImmediate(tex);
         Debug.Log("Resolved spiral creation. Saving file.");
-        File.WriteAllBytes(Application.dataPath + "/Textures/GenerateTexture.png", bytes);
+        using (var fs = new FileStream(Application.dataPath + "/Textures/GenerateTexture.png", FileMode.OpenOrCreate))
+        {
+            fs.Write(bytes, 0, bytes.Length);
+            fs.Close();
+        }
     }
 
     private Dictionary<int, int> _fibMap = new Dictionary<int, int>();

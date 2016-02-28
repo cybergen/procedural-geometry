@@ -1,4 +1,4 @@
-Base path: C:/Program Files/Unity_5.3.2/Editor/Data
+Base path: C:/Program Files/Unity_5.3.3/Editor/Data
 Cmd: getPlatforms
 Cmd: preprocess
   insize=943 outsize=242 ok=1
@@ -77,27 +77,7 @@ Cmd: compileSnippet
 Cmd: compileCompute
   api=4 insize=223 outsize=285 ok=1
 Cmd: compileCompute
-  error: 1 plat 4 at NormalCompute.compute(16): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(21): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(27): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(34): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(36): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(42): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(47): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(53): implicit truncation of vector type
-  api=4 insize=1236 outsize=1513 ok=1
-Cmd: compileCompute
   api=4 insize=223 outsize=285 ok=1
-Cmd: compileCompute
-  error: 1 plat 4 at NormalCompute.compute(16): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(21): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(27): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(34): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(36): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(42): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(47): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(53): implicit truncation of vector type
-  api=4 insize=1236 outsize=1513 ok=1
 Cmd: compileSnippet
   api=4 type=0 insize=7762 outsize=549 kw=DIRECTIONAL SHADOWS_OFF pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED ok=1
 Cmd: compileSnippet
@@ -106,21 +86,3 @@ Cmd: compileSnippet
   api=4 type=2 insize=7762 outsize=753 kw=DIRECTIONAL SHADOWS_OFF pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED ok=1
 Cmd: compileSnippet
   api=4 type=3 insize=7762 outsize=2625 kw=DIRECTIONAL SHADOWS_OFF pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED ok=1
-Cmd: compileCompute
-  error: 1 plat 4 at NormalCompute.compute(16): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(21): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(27): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(34): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(36): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(42): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(47): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(53): implicit truncation of vector type
-  api=4 insize=1192 outsize=1441 ok=1
-Cmd: compileSnippet
-  api=4 type=0 insize=7762 outsize=549 kw=SPOT SHADOWS_OFF pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED ok=1
-Cmd: compileSnippet
-  api=4 type=1 insize=7762 outsize=3861 kw=SPOT SHADOWS_OFF pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED ok=1
-Cmd: compileSnippet
-  api=4 type=2 insize=7762 outsize=753 kw=SPOT SHADOWS_OFF pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED ok=1
-Cmd: compileSnippet
-  api=4 type=3 insize=7762 outsize=2625 kw=SPOT SHADOWS_OFF pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_TEXTURE_ALPHASPLIT_ALLOWED ok=1

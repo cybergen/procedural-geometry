@@ -1,51 +1,25 @@
-Base path: C:/Program Files/Unity/Editor/Data
-Pipe name: \\.\pipe\UnityShaderCompiler-64bit-1-10952
+Base path: C:/Program Files/Unity_3.2.0/Editor/Data
+Pipe name: \\.\pipe\UnityShaderCompiler-64bit-1-2192
 Cmd: getPlatforms
 Cmd: compileCompute
-  error: 1 plat 4 at NormalCompute.compute(16): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(21): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(27): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(34): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(36): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(42): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(47): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(53): implicit truncation of vector type
-  api=4 insize=1236 outsize=1513 ok=1
+  api=4 insize=223 outsize=285 ok=1
 Cmd: compileCompute
-  error: 1 plat 4 at NormalCompute.compute(16): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(21): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(27): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(34): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(36): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(42): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(47): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(53): implicit truncation of vector type
-  api=4 insize=1236 outsize=1513 ok=1
+  api=4 insize=223 outsize=285 ok=1
 Cmd: compileCompute
-  error: 1 plat 4 at NormalCompute.compute(16): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(21): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(27): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(34): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(36): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(42): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(47): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(53): implicit truncation of vector type
-  api=15 insize=1236 outsize=2693 ok=1
+  api=15 insize=223 outsize=477 ok=1
 Cmd: compileCompute
-  error: 1 plat 4 at NormalCompute.compute(16): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(21): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(27): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(34): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(36): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(42): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(47): implicit truncation of vector type
-  error: 1 plat 4 at NormalCompute.compute(53): implicit truncation of vector type
-  api=9 insize=1236 outsize=2717 ok=1
-Cmd: compileSnippet
-  api=4 type=0 insize=7762 outsize=1128 kw=SPOT SHADOWS_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=1 insize=7762 outsize=7481 kw=SPOT SHADOWS_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=2 insize=7762 outsize=1542 kw=SPOT SHADOWS_OFF pd= ok=1
-Cmd: compileSnippet
-  api=4 type=3 insize=7762 outsize=5344 kw=SPOT SHADOWS_OFF pd= ok=1
+  api=9 insize=223 outsize=441 ok=1
+Cmd: preprocess
+  insize=943 outsize=242 ok=1
+Cmd: preprocess
+  insize=1984 outsize=1690 ok=1
+Cmd: preprocess
+  insize=1964 outsize=1838 ok=1
+Cmd: compileCompute
+  api=4 insize=223 outsize=285 ok=1
+Cmd: compileCompute
+  api=4 insize=223 outsize=285 ok=1
+Cmd: compileCompute
+  api=15 insize=223 outsize=477 ok=1
+Cmd: compileCompute
+  api=9 insize=223 outsize=441 ok=1
