@@ -1,19 +1,21 @@
 ﻿#pragma kernel CSMain
 
 RWTexture2D<float4> Displace;
+int Iterations;
 
 [numthreads(8,8,1)]
-void CSMain (uint3 id : SV_DispatchThreadID)
+void CSMain(int3 id : SV_DispatchThreadID)
 {	
 	//Center adjust
-    float2 uv = id.xy - 0.5;
+    float2 uv = id.xy;
+    uv -= 0.5;
 
     float cellTheta = 0.0;
     float3 direction = float3(0, 1, 0);
     float pi = 3.14159265359;
     float spiralCount = 7;
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < Iterations; i++)
     {
     	float radius = length(uv);
     	float logRadius = log(radius);
