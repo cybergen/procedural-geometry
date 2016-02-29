@@ -3,14 +3,12 @@ using UnityEngine;
 public class FractalGenerator2 : Generatable
 {
     public ComputeShader TopologyCompute;
-    public ComputeShader NormalCompute;
     public int FractalIterations;
     public Material AttachedMaterial;
 
     public override void Generate()
     {
         var kernel = TopologyCompute.FindKernel("CSMain");
-        var normKernel = NormalCompute.FindKernel("CSMain");
 
         var displace = new RenderTexture(256, 256, 24);
         displace.enableRandomWrite = true;
@@ -22,11 +20,6 @@ public class FractalGenerator2 : Generatable
         TopologyCompute.SetTexture(kernel, "Displace", displace);
         TopologyCompute.Dispatch(kernel, 256 / 8, 256 / 8, 1);
 
-        NormalCompute.SetTexture(normKernel, "Vertex", displace);
-        NormalCompute.SetTexture(normKernel, "Normal", normal);
-        NormalCompute.Dispatch(normKernel, 256 / 8, 256 / 8, 1);
-
         AttachedMaterial.SetTexture("_Displacement", displace);
-        AttachedMaterial.SetTexture("_Normal", normal);
     }
 }
