@@ -2,18 +2,18 @@
 
 RWTexture2D<float4> Displace;
 int Iterations;
+int SpiralCount;
 
 [numthreads(8,8,1)]
 void CSMain(int3 id : SV_DispatchThreadID)
 {	
 	//Center adjust
     float2 uv = id.xy;
-    uv -= 0.5;
+    
 
     float cellTheta = 0.0;
-    float3 direction = float3(0, 1, 0);
+    float3 direction = float3(0, 0, 0);
     float pi = 3.14159265359;
-    float spiralCount = 7;
 
     for (int i = 0; i < Iterations; i++)
     {
@@ -22,10 +22,13 @@ void CSMain(int3 id : SV_DispatchThreadID)
     	float theta = atan2(uv.x, uv.y);
 
     	float2 spiral = float2(theta - logRadius, theta + logRadius) / pi;
-    	uv = frac(spiral * spiralCount) - 0.5;
+    	uv = frac(spiral * SpiralCount) - 0.5;
     	cellTheta = cellTheta + theta + 0.36;
-    	direction += float3(sin(cellTheta), 0, cos(cellTheta));
+    	float height = lerp(1, 0, logRadius);
+    	float3 tempDir = float3(sin(cellTheta), height, cos(cellTheta));
+    	direction += tempDir;
     }
 
-    Displace[id.xy] = float4(direction.xyz, 1);
+    normalize(direction);
+    Displace[id.xy] = float4(direction.xyz / 2 + 0.5, 1);
 }
