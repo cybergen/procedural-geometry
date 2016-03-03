@@ -1,15 +1,15 @@
-﻿#pragma kernel CSMain
+#pragma kernel CSMain
 
 RWTexture2D<float4> Displace;
 int Iterations;
 int SpiralCount;
+int HalfTextureSize;
 
 [numthreads(8,8,1)]
 void CSMain(int3 id : SV_DispatchThreadID)
 {	
 	//Center adjust
-    float2 uv = id.xy;
-    
+    float2 uv = id.xy - float(HalfTextureSize);
 
     float cellTheta = 0.0;
     float3 direction = float3(0, 0, 0);
@@ -25,7 +25,7 @@ void CSMain(int3 id : SV_DispatchThreadID)
     	uv = frac(spiral * SpiralCount) - 0.5;
     	cellTheta = cellTheta + theta + 0.36;
     	float height = lerp(1, 0, logRadius);
-    	float3 tempDir = float3(sin(cellTheta), height, cos(cellTheta));
+    	float3 tempDir = float3(sin(cellTheta), cos(cellTheta), 0);
     	direction += tempDir;
     }
 

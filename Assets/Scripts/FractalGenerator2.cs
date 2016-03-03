@@ -19,6 +19,7 @@ public class FractalGenerator2 : Generatable
         TopologyCompute.SetTexture(kernel, "Displace", displace);
         TopologyCompute.SetInt("Iterations", FractalIterations);
         TopologyCompute.SetInt("SpiralCount", SpiralCount);
+        TopologyCompute.SetInt("HalfTextureSize", TextureSize / 2);
         TopologyCompute.Dispatch(kernel, TextureSize / 8, TextureSize / 8, 1);
 
         AttachedMaterial.SetTexture("_MainTex", displace);
