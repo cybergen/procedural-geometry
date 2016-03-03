@@ -1,6 +1,7 @@
 #pragma kernel CSMain
 
 RWTexture2D<float4> Displace;
+RWTexture2D<float4> Normal;
 int Iterations;
 int SpiralCount;
 int HalfTextureSize;
@@ -31,4 +32,5 @@ void CSMain(int3 id : SV_DispatchThreadID)
 
     normalize(direction);
     Displace[id.xy] = float4(direction.xyz / 2 + 0.5, 1);
+    Normal[id.xy] = float4(direction.xyz / 2 + 0.5, 1);
 }

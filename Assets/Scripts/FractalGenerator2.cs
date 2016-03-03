@@ -16,7 +16,12 @@ public class FractalGenerator2 : Generatable
         displace.enableRandomWrite = true;
         displace.Create();
 
+        var normal = new RenderTexture(TextureSize, TextureSize, 24);
+        normal.enableRandomWrite = true;
+        normal.Create();
+
         TopologyCompute.SetTexture(kernel, "Displace", displace);
+        TopologyCompute.SetTexture(kernel, "Normal", displace);
         TopologyCompute.SetInt("Iterations", FractalIterations);
         TopologyCompute.SetInt("SpiralCount", SpiralCount);
         TopologyCompute.SetInt("HalfTextureSize", TextureSize / 2);
@@ -24,5 +29,6 @@ public class FractalGenerator2 : Generatable
 
         AttachedMaterial.SetTexture("_MainTex", displace);
         AttachedMaterial.SetTexture("_Displacement", displace);
+        AttachedMaterial.SetTexture("_Normal", normal);
     }
 }

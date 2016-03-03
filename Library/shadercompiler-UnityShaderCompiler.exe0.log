@@ -26,3 +26,5 @@ Cmd: compileCompute
   api=4 insize=884 outsize=2025 ok=1
 Cmd: compileCompute
   api=4 insize=879 outsize=1961 ok=1
+Cmd: compileCompute
+  api=4 insize=963 outsize=2041 ok=1
