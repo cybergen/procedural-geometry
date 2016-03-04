@@ -10,8 +10,7 @@ int HalfTextureSize;
 void CSMain(int3 id : SV_DispatchThreadID)
 {	
 	//Center adjust
-    float2 uv = id.xy - float(HalfTextureSize);
-    float cellRadius = 1;
+    float2 uv = id.xy - float(HalfTextureSize);\
 
     float cellTheta = 0.0;
     float3 direction = float3(0, 0, 0);
@@ -26,13 +25,11 @@ void CSMain(int3 id : SV_DispatchThreadID)
 
     	uv = frac(spiral * SpiralCount) - 0.5;
     	cellTheta = cellTheta + theta + 0.36;
-    	float height = lerp(1, 0, logRadius);
     	float x = sin(cellTheta);
-    	float y = cos(cellTheta);
-    	float z = 0;//radius;
-    	float3 tempDir = normalize(float3(x, y, z));// * cellRadius;
-    	direction += tempDir;// * cellRadius;
-    	cellRadius *= sqrt(radius);
+    	float z = cos(cellTheta);
+    	float y = log(length(uv));
+    	float3 tempDir = float3(x, y, z);
+    	direction += tempDir;
     }
 
     normalize(direction);
