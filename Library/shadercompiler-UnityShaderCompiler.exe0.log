@@ -28,3 +28,31 @@ Cmd: compileCompute
   api=4 insize=879 outsize=1961 ok=1
 Cmd: compileCompute
   api=4 insize=963 outsize=2041 ok=1
+Cmd: compileCompute
+  api=4 insize=963 outsize=2049 ok=1
+Cmd: compileCompute
+  api=4 insize=963 outsize=2041 ok=1
+Cmd: compileCompute
+  api=4 insize=963 outsize=2041 ok=1
+Cmd: compileCompute
+  api=4 insize=1025 outsize=2073 ok=1
+Cmd: compileCompute
+  api=4 insize=1035 outsize=2073 ok=1
+Cmd: compileCompute
+  api=4 insize=1107 outsize=2073 ok=1
+Cmd: compileCompute
+  api=4 insize=1107 outsize=2149 ok=1
+Cmd: compileCompute
+  api=4 insize=1112 outsize=2073 ok=1
+Cmd: compileCompute
+  api=4 insize=1099 outsize=2009 ok=1
+Cmd: compileCompute
+  api=4 insize=1105 outsize=2161 ok=1
+Cmd: compileCompute
+  api=4 insize=1121 outsize=2161 ok=1
+Cmd: compileCompute
+  api=4 insize=1124 outsize=2065 ok=1
+Cmd: compileCompute
+  api=4 insize=1128 outsize=2173 ok=1
+Cmd: compileCompute
+  api=4 insize=1128 outsize=2173 ok=1
