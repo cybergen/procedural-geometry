@@ -25,14 +25,15 @@ void CSMain(int3 id : SV_DispatchThreadID)
 
     	uv = frac(spiral * SpiralCount) - 0.5;
     	cellTheta = cellTheta + theta + 0.36;
-    	float x = sin(cellTheta);
-    	float z = cos(cellTheta);
-    	float y = log(length(uv));
-    	float3 tempDir = float3(x, y, z);
+
+    	float x = 0;//sin(cellTheta);
+    	float z = 0;//cos(cellTheta);    	
+    	float y = 1 - radius / HalfTextureSize;
+
+    	float3 tempDir = float3(x * y, y, z * y);
     	direction += tempDir;
     }
 
-    normalize(direction);
     Displace[id.xy] = float4(direction.xyz / 2 + 0.5, 1);
     Normal[id.xy] = float4(direction.xyz / 2 + 0.5, 1);
 }
