@@ -1,64 +1,18 @@
 Base path: C:/Program Files/Unity_5.3.3/Editor/Data
 Cmd: getPlatforms
 Cmd: compileCompute
-  api=4 insize=847 outsize=1993 ok=1
+  api=4 insize=1804 outsize=2753 ok=1
 Cmd: compileCompute
-  api=4 insize=847 outsize=1693 ok=1
+  api=4 insize=1812 outsize=2729 ok=1
 Cmd: compileCompute
-  api=4 insize=835 outsize=1613 ok=1
+  api=4 insize=1794 outsize=2681 ok=1
 Cmd: compileCompute
-  api=4 insize=841 outsize=1953 ok=1
+  api=4 insize=1801 outsize=2713 ok=1
 Cmd: compileCompute
-  api=4 insize=847 outsize=1993 ok=1
+  api=4 insize=1820 outsize=2757 ok=1
 Cmd: compileCompute
-  api=4 insize=872 outsize=2017 ok=1
+  api=4 insize=1812 outsize=2813 ok=1
 Cmd: compileCompute
-  api=4 insize=878 outsize=2017 ok=1
+  api=4 insize=1820 outsize=2757 ok=1
 Cmd: compileCompute
-  api=4 insize=841 outsize=2017 ok=1
-Cmd: compileCompute
-  api=4 insize=844 outsize=1993 ok=1
-Cmd: compileCompute
-  api=4 insize=865 outsize=1993 ok=1
-Cmd: compileCompute
-  api=4 insize=877 outsize=2029 ok=1
-Cmd: compileCompute
-  api=4 insize=884 outsize=2025 ok=1
-Cmd: compileCompute
-  api=4 insize=879 outsize=1961 ok=1
-Cmd: compileCompute
-  api=4 insize=963 outsize=2041 ok=1
-Cmd: compileCompute
-  api=4 insize=963 outsize=2049 ok=1
-Cmd: compileCompute
-  api=4 insize=963 outsize=2041 ok=1
-Cmd: compileCompute
-  api=4 insize=963 outsize=2041 ok=1
-Cmd: compileCompute
-  api=4 insize=1025 outsize=2073 ok=1
-Cmd: compileCompute
-  api=4 insize=1035 outsize=2073 ok=1
-Cmd: compileCompute
-  api=4 insize=1107 outsize=2073 ok=1
-Cmd: compileCompute
-  api=4 insize=1107 outsize=2149 ok=1
-Cmd: compileCompute
-  api=4 insize=1112 outsize=2073 ok=1
-Cmd: compileCompute
-  api=4 insize=1099 outsize=2009 ok=1
-Cmd: compileCompute
-  api=4 insize=1105 outsize=2161 ok=1
-Cmd: compileCompute
-  api=4 insize=1121 outsize=2161 ok=1
-Cmd: compileCompute
-  api=4 insize=1124 outsize=2065 ok=1
-Cmd: compileCompute
-  api=4 insize=1128 outsize=2173 ok=1
-Cmd: compileCompute
-  api=4 insize=1128 outsize=2173 ok=1
-Cmd: compileCompute
-  api=4 insize=975 outsize=2041 ok=1
-Cmd: compileCompute
-  api=4 insize=984 outsize=2057 ok=1
-Cmd: compileCompute
-  api=4 insize=989 outsize=2105 ok=1
+  api=4 insize=1821 outsize=2705 ok=1

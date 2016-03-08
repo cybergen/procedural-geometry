@@ -6,11 +6,27 @@ int Iterations;
 int SpiralCount;
 int HalfTextureSize;
 
+struct PointData
+{
+	float x;
+	float y;
+	float iteration;
+	float radius;
+	float logRadius;
+	float theta;
+	float2 spiral;
+	float2 uv;
+	float3 stepDisplacement;
+	float3 totalDirection;
+};
+
+RWStructuredBuffer<PointData> Data;
+
 [numthreads(8,8,1)]
 void CSMain(int3 id : SV_DispatchThreadID)
 {	
 	//Center adjust
-    float2 uv = id.xy - float(HalfTextureSize);
+    float2 uv = id.xy / (2 * float(HalfTextureSize)) - 0.5;
 
     float cellTheta = 0.0;
     float3 direction = float3(0, 0, 0);
@@ -21,17 +37,37 @@ void CSMain(int3 id : SV_DispatchThreadID)
     	float radius = length(uv);
     	float logRadius = log(radius);
     	float theta = atan2(uv.x, uv.y);
+    	if (radius == 0) 
+    	{
+    		logRadius = 0;
+    		theta = 0;
+    	}
     	float2 spiral = float2(theta - logRadius, theta + logRadius) / pi;
+    	float cellr = floor(spiral.x * float(SpiralCount)) - floor(spiral.y * float(SpiralCount));
 
     	uv = frac(spiral * SpiralCount) - 0.5;
     	cellTheta = cellTheta + theta + 0.36;
 
     	float x = 0;//-sin(cellTheta);
     	float z = 0;//-cos(cellTheta);    	
-    	float y = 1 - radius / HalfTextureSize;
+    	float y = 1 - radius;
 
-    	float3 tempDir = float3(x, y, z);
+    	float3 tempDir = float3(x, y, z) / (float(i) + 1.0);
     	direction += tempDir;
+
+    	if (id.x == (HalfTextureSize + 1048) && id.y == HalfTextureSize)
+    	{
+    		Data[i].x = float(id.x);
+    		Data[i].y = float(id.y);
+    		Data[i].iteration = float(i);
+    		Data[i].radius = radius;
+    		Data[i].logRadius = logRadius;
+    		Data[i].theta = cellTheta;
+    		Data[i].spiral = spiral;
+    		Data[i].uv = uv;
+    		Data[i].stepDisplacement = tempDir;
+    		Data[i].totalDirection = direction;
+    	}
     }
 
     Displace[id.xy] = float4(direction.xyz / 2 + 0.5, 1);
