@@ -44,7 +44,8 @@
 
         void disp (inout appdata v)
         {
-        	float4 displace = (tex2Dlod(_Displacement, float4(v.texcoord.xy,0,0)) - 0.5) * 2;
+        	float4 displace = float4((tex2Dlod(_Displacement, float4(v.texcoord.xy,0,0)).xyz - 0.5) * 2, 0);
+
             v.vertex += displace * _Scale;
             float4 norm = displace;
             normalize(norm);
