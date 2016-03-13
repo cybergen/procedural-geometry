@@ -45,12 +45,9 @@
         void disp (inout appdata v)
         {
         	float4 displace = float4((tex2Dlod(_Displacement, float4(v.texcoord.xy,0,0)).xyz - 0.5) * 2, 0);
-
             v.vertex += displace * _Scale;
-            float4 norm = displace;
-            normalize(norm);
-            v.normal = norm;
-            v.normal = float3(0,1,0);
+
+            v.normal = float4(tex2Dlod(_Normal, float4(v.texcoord.xy,0,0)).xyz * 2 - 1, 1);
         }
 
         struct Input 
@@ -64,12 +61,12 @@
         float _Metallic;
         float _Smoothness;
 
-        void surf (Input IN, inout SurfaceOutputStandard o) {
-            half4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
+        void surf (Input IN, inout SurfaceOutputStandard o)
+        {
+            half4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
             o.Albedo = c.rgb;
             o.Metallic = _Metallic;
             o.Smoothness = _Smoothness;
-            o.Normal = UnpackNormal(tex2D(_NormalMap, IN.uv_MainTex));
         }
         ENDCG
     }

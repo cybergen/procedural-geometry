@@ -1,26 +1,16 @@
 Base path: C:/Program Files/Unity_5.3.3/Editor/Data
 Cmd: getPlatforms
 Cmd: compileCompute
-  api=4 insize=1804 outsize=2753 ok=1
+  api=4 insize=1006 outsize=1989 ok=1
 Cmd: compileCompute
-  api=4 insize=1812 outsize=2729 ok=1
+  api=4 insize=1003 outsize=1961 ok=1
 Cmd: compileCompute
-  api=4 insize=1794 outsize=2681 ok=1
+  api=4 insize=1007 outsize=1993 ok=1
 Cmd: compileCompute
-  api=4 insize=1801 outsize=2713 ok=1
+  api=4 insize=1009 outsize=1993 ok=1
 Cmd: compileCompute
-  api=4 insize=1820 outsize=2757 ok=1
+  api=4 insize=1020 outsize=2081 ok=1
 Cmd: compileCompute
-  api=4 insize=1812 outsize=2813 ok=1
+  api=4 insize=1012 outsize=2125 ok=1
 Cmd: compileCompute
-  api=4 insize=1820 outsize=2757 ok=1
-Cmd: compileCompute
-  api=4 insize=1821 outsize=2705 ok=1
-Cmd: compileCompute
-  api=4 insize=1812 outsize=2673 ok=1
-Cmd: compileCompute
-  api=4 insize=1834 outsize=2713 ok=1
-Cmd: compileCompute
-  api=4 insize=1834 outsize=2713 ok=1
-Cmd: compileCompute
-  api=4 insize=1826 outsize=2729 ok=1
+  api=4 insize=1021 outsize=2125 ok=1
