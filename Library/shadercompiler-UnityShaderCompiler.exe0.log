@@ -1,16 +1,42 @@
 Base path: C:/Program Files/Unity_5.3.3/Editor/Data
 Cmd: getPlatforms
 Cmd: compileCompute
-  api=4 insize=1006 outsize=1989 ok=1
+  error: 2 plat 4 at RomanescoCompute2.compute(43): undeclared identifier 'norm'
+  api=4 insize=1495 outsize=29 ok=0
 Cmd: compileCompute
-  api=4 insize=1003 outsize=1961 ok=1
+  error: 2 plat 4 at RomanescoCompute2.compute(43): undeclared identifier 'norm'
+  api=4 insize=1495 outsize=29 ok=0
 Cmd: compileCompute
-  api=4 insize=1007 outsize=1993 ok=1
+  api=4 insize=1502 outsize=3453 ok=1
 Cmd: compileCompute
-  api=4 insize=1009 outsize=1993 ok=1
+  api=4 insize=1642 outsize=3677 ok=1
 Cmd: compileCompute
-  api=4 insize=1020 outsize=2081 ok=1
+  api=4 insize=1659 outsize=3553 ok=1
 Cmd: compileCompute
-  api=4 insize=1012 outsize=2125 ok=1
+  api=4 insize=1655 outsize=3549 ok=1
 Cmd: compileCompute
-  api=4 insize=1021 outsize=2125 ok=1
+  api=4 insize=1659 outsize=3513 ok=1
+Cmd: compileCompute
+  api=4 insize=1661 outsize=3513 ok=1
+Cmd: compileCompute
+  api=4 insize=1662 outsize=3521 ok=1
+Cmd: compileCompute
+  api=4 insize=1632 outsize=3705 ok=1
+Cmd: compileCompute
+  api=4 insize=1632 outsize=3705 ok=1
+Cmd: compileCompute
+  api=4 insize=1632 outsize=3705 ok=1
+Cmd: compileCompute
+  api=4 insize=1643 outsize=3761 ok=1
+Cmd: compileCompute
+  api=4 insize=1631 outsize=3677 ok=1
+Cmd: compileCompute
+  api=4 insize=1632 outsize=3705 ok=1
+Cmd: compileCompute
+  error: 2 plat 4 at RomanescoCompute2.compute(49): variable 'base' used without having been completely initialized
+  api=4 insize=1654 outsize=29 ok=0
+Cmd: compileCompute
+  error: 2 plat 4 at RomanescoCompute2.compute(49): variable 'base' used without having been completely initialized
+  api=4 insize=1654 outsize=29 ok=0
+Cmd: compileCompute
+  api=4 insize=1660 outsize=3725 ok=1

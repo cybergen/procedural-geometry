@@ -48,8 +48,8 @@ void CSMain(int3 id : SV_DispatchThreadID)
     	uv = frac(spiral * SpiralCount) - 0.5;
     	cellTheta = cellTheta + theta + 0.36;
 
-    	float x = 0;//-sin(cellTheta);
-    	float z = 0;//-cos(cellTheta);    	
+    	float x = -sin(cellTheta);
+    	float z = -cos(cellTheta);    	
     	float y = 1 - radius;
 
     	float3 tempDir = float3(x, y, z) / (float(i) + 1.0);

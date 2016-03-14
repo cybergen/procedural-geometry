@@ -9,29 +9,48 @@ int HalfTextureSize;
 [numthreads(8,8,1)]
 void CSMain(int3 id : SV_DispatchThreadID)
 {	
-	//Center adjust
-    float2 uv = id.xy / (2 * float(HalfTextureSize)) - 0.5;    
-    float3 direction = float3(0, 0, 0);
+	//Turn our x,y indices into uv values and center
+    float2 uv = id.xy / (2 * float(HalfTextureSize)) - 0.5;
     float pi = 3.14159265359;
 
-    for (int i = 0; i < Iterations; i++)
+    float radius = length(uv);
+    float logRadius = log(radius);
+    float theta = atan2(uv.x, uv.y);
+
+    float2 spiral = float2(theta - logRadius, theta + logRadius) / pi;
+
+    //Get current direction based on distance from center point
+    float x = -sin(theta);
+    float z = -cos(theta);
+    float y = 0.5 - radius;
+    float3 oldBase = normalize(float3(x, y, z));
+
+    spiral = float2(theta - logRadius, theta + logRadius) / pi;
+    uv = frac(spiral * SpiralCount) - 0.5;
+    theta += theta + 0.36;      
+
+    for (int i = 1; i < Iterations; i++)
     {
-    	float radius = length(uv);
-    	float logRadius = log(radius);
-    	float theta = atan2(uv.x, uv.y);
+    	radius = length(uv);
+    	logRadius = log(radius);
+    	theta = atan2(uv.x, uv.y);
 
-    	float2 spiral = float2(theta - logRadius, theta + logRadius) / pi;
-    	float cellr = floor(spiral.x * float(SpiralCount)) - floor(spiral.y * float(SpiralCount));    	
-
-        float x = -sin(theta);
-    	float z = -cos(theta);
-    	float y = 0.5 - radius;
-    	direction = normalize(float3(x, y, z));
-
+    	spiral = float2(theta - logRadius, theta + logRadius) / pi;
         uv = frac(spiral * SpiralCount) - 0.5;
         theta += theta + 0.36;
+
+        //Get current direction based on distance from center point
+        x = -sin(theta);
+    	z = -cos(theta);
+    	y = 0.5 - radius;
+        float3 norm = normalize(float3(x, y, z));
+
+        norm = float3(-norm.x, -norm.y, norm.z);
+        float3 base = float3(oldBase.xy, oldBase.z + 1);        
+        oldBase += base / base.z * dot(base, norm) - norm;
+        normalize(oldBase);
     }
 
-    Displace[id.xy] = float4(direction.xyz * 0.5 + 0.5, 1);
-    Normal[id.xy] = float4(direction.xyz * 0.5 + 0.5, 1);
+    Displace[id.xy] = float4(oldBase.xyz * 0.5 + 0.5, 1);
+    Normal[id.xy] = float4(normalize(oldBase.xyz) * 0.5 + 0.5, 1);
 }
