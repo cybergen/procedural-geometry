@@ -7,8 +7,9 @@ public class FractalGenerator3 : Generatable
     public int SpiralCount;
     public Material AttachedMaterial;
     public int TextureSize;
-    public float b;
+    public int SpiralStep;
     public float a;
+    public float b;
 
     public override void Generate()
     {
@@ -41,7 +42,7 @@ public class FractalGenerator3 : Generatable
 
         float e = 2.71828f;
 
-        for (int theta = 0; theta < 420; theta += 15)
+        for (int theta = 0; theta < 420; theta += SpiralStep)
         {
             var power = Mathf.Pow(e, b * theta);
 
