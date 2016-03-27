@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -61,6 +62,8 @@ public class FractalGenerator3 : Generatable
         //    }
         //}
 
+        var buffer = new SpiralBuffer();
+
         for (int i = 0; i < PhyllotaxisCount; i++)
         {
             var angleDeg = i * PhyllotaxisAngle;
@@ -70,35 +73,97 @@ public class FractalGenerator3 : Generatable
             normal.Normalize();
             float distance = C * Mathf.Sqrt(i) * power;
             normal *= distance;
-            DrawPoint(tex, (int)normal.x + TextureSize / 2, (int)normal.y + TextureSize / 2, Color.black);
+            var x = (int)normal.x + TextureSize / 2;
+            var y = (int)normal.y + TextureSize / 2;
+            buffer.AddEntry(x, y);
+            //DrawPoint(tex, x, y, Color.black);
         }
+        buffer.DrawVoronoi(tex);
+        buffer.DrawPoints(tex, Color.black);
 
         tex.Apply();
         AttachedMaterial.SetTexture("_MainTex", tex);
-    }
-
-    private void DrawPoint(Texture2D tex, int pixX, int pixY, Color color)
-    {
-        tex.SetPixel(pixX, pixY, Color.black);
-        tex.SetPixel(pixX - 1, pixY - 1, Color.black);
-        tex.SetPixel(pixX - 1, pixY, Color.black);
-        tex.SetPixel(pixX - 1, pixY + 1, Color.black);
-        tex.SetPixel(pixX, pixY - 1, Color.black);
-        tex.SetPixel(pixX, pixY + 1, Color.black);
-    }
+    }    
 
     private class SpiralBuffer
     {
-        private List<Tuple<float, float>> _list = new List<Tuple<float, float>>();
+        private List<Tuple<int, int>> _list = new List<Tuple<int, int>>();
+        private List<Color> _colors = new List<Color>();
+        private int _lowX = int.MaxValue;
+        private int _highX = int.MinValue;
+        private int _lowY = int.MaxValue;
+        private int _highY = int.MinValue;
+        private System.Random _rand = new System.Random();
 
-        public void AddEntry(float angle, float distance)
+        public void AddEntry(int x, int y)
         {
-            _list.Add(new Tuple<float, float>(angle, distance));
+            _lowX = Mathf.Min(x, _lowX);
+            _highX = Mathf.Max(x, _highX);
+            _lowY = Mathf.Min(y, _lowY);
+            _highY = Mathf.Max(y, _highY);
+            _list.Add(new Tuple<int, int>(x, y));
+            _colors.Add(GetRandomColor());
         }
 
-        public void DrawBuffer(Texture2D tex, int minX, int maxX, int minY, int maxY, Color color)
+        public void DrawOriented(Texture2D tex, int minX, int maxX, int minY, int maxY, Color color)
         {
 
+        }
+
+        public void DrawPoints(Texture2D tex, Color color)
+        {
+            foreach (var entry in _list)
+            {
+                DrawPoint(tex, entry.ItemOne, entry.ItemTwo, color);
+            }
+        }
+
+        public void DrawVoronoi(Texture2D tex)
+        {
+            for (int y = 0; y < tex.height; y++)
+            {
+                for (int x = 0; x < tex.width; x++)
+                {
+                    tex.SetPixel(x, y, _colors[GetNearestNeighbor(x, y)]);
+                }
+            }
+        }
+
+        private int GetNearestNeighbor(int x, int y)
+        {
+            int previousClosest = 0;
+            float previousDistance = float.MaxValue;
+            var point = new Vector2(x, y);
+            for (int i = 0; i < _list.Count; i++)
+            {
+                var entry = _list[i];
+                var neighbor = new Vector2(entry.ItemOne, entry.ItemTwo);
+                var dist = Vector2.Distance(neighbor, point);
+                if (dist < previousDistance)
+                {
+                    previousClosest = i;
+                    previousDistance = dist;
+                }
+            }
+            return previousClosest;
+        }
+
+        private void DrawPoint(Texture2D tex, int pixX, int pixY, Color color)
+        {
+            tex.SetPixel(pixX, pixY, color);
+            tex.SetPixel(pixX - 1, pixY - 1, color);
+            tex.SetPixel(pixX - 1, pixY, color);
+            tex.SetPixel(pixX - 1, pixY + 1, color);
+            tex.SetPixel(pixX, pixY - 1, color);
+            tex.SetPixel(pixX, pixY + 1, color);
+        }
+
+        private Color GetRandomColor()
+        {
+            var r = _rand.Next(256) / 256f;
+            var g = _rand.Next(256) / 256f;
+            var b = _rand.Next(256) / 256f;
+            return new Color(r, g, b);
         }
     }
 
