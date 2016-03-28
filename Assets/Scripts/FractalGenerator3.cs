@@ -15,6 +15,8 @@ public class FractalGenerator3 : Generatable
     public float C;
     public int PhyllotaxisCount;
     public float PhyllotaxisAngle;
+    public bool DrawPoints;
+    public bool DrawVoronoi;
 
     public override void Generate()
     {
@@ -78,8 +80,8 @@ public class FractalGenerator3 : Generatable
             buffer.AddEntry(x, y);
             //DrawPoint(tex, x, y, Color.black);
         }
-        buffer.DrawVoronoi(tex);
-        buffer.DrawPoints(tex, Color.black);
+        if (DrawVoronoi) buffer.DrawVoronoi(tex);
+        if (DrawPoints) buffer.DrawPoints(tex, Color.black);
 
         tex.Apply();
         AttachedMaterial.SetTexture("_MainTex", tex);
