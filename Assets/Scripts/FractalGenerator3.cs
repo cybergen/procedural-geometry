@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -74,14 +73,10 @@ public class FractalGenerator3 : Generatable
             var normal = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
             normal.Normalize();
             float distance = C * Mathf.Sqrt(i) * power;
-            normal *= distance;
-            var x = (int)normal.x + TextureSize / 2;
-            var y = (int)normal.y + TextureSize / 2;
-            buffer.AddEntry(x, y);
-            //DrawPoint(tex, x, y, Color.black);
+            buffer.AddEntry(normal.x, normal.y, distance);
         }
         if (DrawVoronoi) buffer.DrawVoronoi(tex);
-        if (DrawPoints) buffer.DrawPoints(tex, Color.black);
+        if (DrawPoints) buffer.DrawOriented(tex, (float)TextureSize, Color.black);
 
         tex.Apply();
         AttachedMaterial.SetTexture("_MainTex", tex);
@@ -89,44 +84,49 @@ public class FractalGenerator3 : Generatable
 
     private class SpiralBuffer
     {
-        private List<Tuple<int, int>> _list = new List<Tuple<int, int>>();
+        private List<Tuple<float, float, float>> _list = new List<Tuple<float, float, float>>();
+        private int[,] _voronoiField;
+        private float _maxRange = float.MinValue;
         private List<Color> _colors = new List<Color>();
-        private int _lowX = int.MaxValue;
-        private int _highX = int.MinValue;
-        private int _lowY = int.MaxValue;
-        private int _highY = int.MinValue;
         private System.Random _rand = new System.Random();
 
-        public void AddEntry(int x, int y)
+        public void AddEntry(float x, float y, float dist)
         {
-            _lowX = Mathf.Min(x, _lowX);
-            _highX = Mathf.Max(x, _highX);
-            _lowY = Mathf.Min(y, _lowY);
-            _highY = Mathf.Max(y, _highY);
-            _list.Add(new Tuple<int, int>(x, y));
+            _list.Add(new Tuple<float, float, float>(x / 2f, y / 2f, dist));
+            _maxRange = Mathf.Max(_maxRange, dist);
             _colors.Add(GetRandomColor());
         }
 
-        public void DrawOriented(Texture2D tex, int minX, int maxX, int minY, int maxY, Color color)
+        public void DrawOriented(Texture2D tex, float size, Color color)
         {
-
+            foreach (var entry in _list)
+            {
+                var sizeMult = size / 2f * entry.ItemThree / _maxRange;
+                var x = (int)(entry.ItemOne * sizeMult) + (int)(size / 2f);
+                var y = (int)(entry.ItemTwo * sizeMult) + (int)(size / 2f);
+                Debug.Log("Drawing point with x: " + x + ", and y: " + y + ", and size: " + size + ", and maxRange: " + _maxRange);
+                DrawPoint(tex, x, y, color);
+            }
         }
 
         public void DrawPoints(Texture2D tex, Color color)
         {
             foreach (var entry in _list)
             {
-                DrawPoint(tex, entry.ItemOne, entry.ItemTwo, color);
+                DrawPoint(tex, (int)entry.ItemOne, (int)entry.ItemTwo, color);
             }
         }
 
         public void DrawVoronoi(Texture2D tex)
         {
+            _voronoiField = new int[tex.width, tex.height];
             for (int y = 0; y < tex.height; y++)
             {
                 for (int x = 0; x < tex.width; x++)
                 {
-                    tex.SetPixel(x, y, _colors[GetNearestNeighbor(x, y)]);
+                    var neighbor = GetNearestNeighbor(x, y);
+                    _voronoiField[x, y] = neighbor;
+                    tex.SetPixel(x, y, _colors[neighbor]);
                 }
             }
         }
