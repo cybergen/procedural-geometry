@@ -76,7 +76,7 @@ public class FractalGenerator3 : Generatable
             buffer.AddEntry(normal.x, normal.y, distance);
         }
         if (DrawVoronoi) buffer.DrawVoronoi(tex);
-        if (DrawPoints) buffer.DrawOriented(tex, (float)TextureSize, Color.black);
+        if (DrawPoints) buffer.DrawOriented(tex, (float)TextureSize, Color.black, TextureSize / 2, TextureSize / 2, FractalIterations);
 
         tex.Apply();
         AttachedMaterial.SetTexture("_MainTex", tex);
@@ -97,15 +97,23 @@ public class FractalGenerator3 : Generatable
             _colors.Add(GetRandomColor());
         }
 
-        public void DrawOriented(Texture2D tex, float size, Color color)
+        public void DrawOriented(Texture2D tex, float size, Color color, int centerX, int centerY, int depth)
         {
+            int previousX = centerX;
+            int previousY = centerY;
             foreach (var entry in _list)
             {
-                var sizeMult = size / 2f * entry.ItemThree / _maxRange;
-                var x = (int)(entry.ItemOne * sizeMult) + (int)(size / 2f);
-                var y = (int)(entry.ItemTwo * sizeMult) + (int)(size / 2f);
-                Debug.Log("Drawing point with x: " + x + ", and y: " + y + ", and size: " + size + ", and maxRange: " + _maxRange);
+                var sizeMult = size * entry.ItemThree / _maxRange;
+                var x = (int)(entry.ItemOne * sizeMult + centerX);
+                var y = (int)(entry.ItemTwo * sizeMult + centerY);
                 DrawPoint(tex, x, y, color);
+                if (depth > 1)
+                {
+                    var dist = Mathf.Sqrt(Mathf.Pow(x - previousX, 2) + Mathf.Pow(y - previousY, 2));
+                    DrawOriented(tex, dist, color, x, y, depth - 1);
+                }
+                previousX = x;
+                previousY = y;
             }
         }
 
