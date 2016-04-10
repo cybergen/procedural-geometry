@@ -1,0 +1,3 @@
+[submodule "bri-lib"]
+	path = bri-lib
+	url = git@github.com:cybergen/bri-lib.git

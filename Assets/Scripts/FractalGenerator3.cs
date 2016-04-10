@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using BriLib;
 
 public class FractalGenerator3 : Generatable
 {
@@ -19,27 +20,6 @@ public class FractalGenerator3 : Generatable
 
     public override void Generate()
     {
-        //var kernel = TopologyCompute.FindKernel("CSMain");        
-
-        //var displace = new RenderTexture(TextureSize, TextureSize, 24);
-        //displace.enableRandomWrite = true;
-        //displace.Create();
-
-        //var normal = new RenderTexture(TextureSize, TextureSize, 24);
-        //normal.enableRandomWrite = true;
-        //normal.Create();
-
-        //TopologyCompute.SetTexture(kernel, "Displace", displace);
-        //TopologyCompute.SetTexture(kernel, "Normal", normal);
-        //TopologyCompute.SetInt("Iterations", FractalIterations);
-        //TopologyCompute.SetInt("SpiralCount", SpiralCount);
-        //TopologyCompute.SetInt("HalfTextureSize", TextureSize / 2);
-        //TopologyCompute.Dispatch(kernel, TextureSize / 8, TextureSize / 8, 1);
-
-        ////AttachedMaterial.SetTexture("_MainTex", normal);
-        ////AttachedMaterial.SetTexture("_Displacement", displace);
-        //AttachedMaterial.SetTexture("_Normal", normal);
-
         Texture2D tex = new Texture2D(TextureSize, TextureSize, TextureFormat.RGB24, false);
         for (int y = 0; y < TextureSize; y++)
         {
@@ -47,22 +27,6 @@ public class FractalGenerator3 : Generatable
         }
 
         float e = 2.71828f;
-
-        //for (int theta = 0; theta < 420; theta += SpiralStep)
-        //{
-        //    var power = Mathf.Pow(e, b * theta);
-
-        //    for (int i = 0; i < SpiralCount; i++)
-        //    {
-        //        var angle = theta + (360f / SpiralCount * i) * Mathf.Deg2Rad;
-        //        var x = a * Mathf.Cos(angle) * power;
-        //        var y = a * Mathf.Sin(angle) * power;
-        //        var pixX = (int)x + TextureSize / 2;
-        //        var pixY = (int)y + TextureSize / 2;
-        //        DrawPoint(tex, pixX, pixY, Color.black);
-        //    }
-        //}
-
         var buffer = new SpiralBuffer();
 
         for (int i = 0; i < PhyllotaxisCount; i++)
@@ -75,8 +39,8 @@ public class FractalGenerator3 : Generatable
             float distance = C * Mathf.Sqrt(i) * power;
             buffer.AddEntry(normal.x, normal.y, distance);
         }
-        if (DrawVoronoi) buffer.DrawVoronoi(tex);
-        if (DrawPoints) buffer.DrawOriented(tex, (float)TextureSize, Color.black, TextureSize / 2, TextureSize / 2, FractalIterations);
+        if (DrawVoronoi) buffer.DrawVoronoi(tex, TextureSize, TextureSize / 2, TextureSize / 2);
+        if (DrawPoints) buffer.DrawOriented(tex, TextureSize, Color.black, TextureSize / 2, TextureSize / 2, FractalIterations);
 
         tex.Apply();
         AttachedMaterial.SetTexture("_MainTex", tex);
@@ -109,8 +73,9 @@ public class FractalGenerator3 : Generatable
                 DrawPoint(tex, x, y, color);
                 if (depth > 1)
                 {
+                    var newColor = new Color(color.r + 0.25f, color.g + 0.25f, color.b + 0.25f);
                     var dist = Mathf.Sqrt(Mathf.Pow(x - previousX, 2) + Mathf.Pow(y - previousY, 2));
-                    DrawOriented(tex, dist, color, x, y, depth - 1);
+                    DrawOriented(tex, dist, newColor, x, y, depth - 1);
                 }
                 previousX = x;
                 previousY = y;
@@ -125,21 +90,21 @@ public class FractalGenerator3 : Generatable
             }
         }
 
-        public void DrawVoronoi(Texture2D tex)
+        public void DrawVoronoi(Texture2D tex, float size, int centerX, int centerY)
         {
             _voronoiField = new int[tex.width, tex.height];
             for (int y = 0; y < tex.height; y++)
             {
                 for (int x = 0; x < tex.width; x++)
                 {
-                    var neighbor = GetNearestNeighbor(x, y);
+                    var neighbor = GetNearestNeighbor(x, y, size, centerX, centerY);
                     _voronoiField[x, y] = neighbor;
                     tex.SetPixel(x, y, _colors[neighbor]);
                 }
             }
         }
 
-        private int GetNearestNeighbor(int x, int y)
+        private int GetNearestNeighbor(int x, int y, float size, int centerX, int centerY)
         {
             int previousClosest = 0;
             float previousDistance = float.MaxValue;
@@ -147,7 +112,12 @@ public class FractalGenerator3 : Generatable
             for (int i = 0; i < _list.Count; i++)
             {
                 var entry = _list[i];
-                var neighbor = new Vector2(entry.ItemOne, entry.ItemTwo);
+
+                var sizeMult = size * entry.ItemThree / _maxRange;
+                var entryX = (int)(entry.ItemOne * sizeMult + centerX);
+                var entryY = (int)(entry.ItemTwo * sizeMult + centerY);
+                var neighbor = new Vector2(entryX, entryY);
+
                 var dist = Vector2.Distance(neighbor, point);
                 if (dist < previousDistance)
                 {
@@ -174,32 +144,6 @@ public class FractalGenerator3 : Generatable
             var g = _rand.Next(256) / 256f;
             var b = _rand.Next(256) / 256f;
             return new Color(r, g, b);
-        }
-    }
-
-    private struct Tuple<T, K>
-    {
-        public T ItemOne;
-        public K ItemTwo;
-
-        public Tuple(T itemOne, K itemTwo)
-        {
-            ItemOne = itemOne;
-            ItemTwo = itemTwo;
-        }
-    }
-
-    private struct Tuple<T, K, L>
-    {
-        public T ItemOne;
-        public K ItemTwo;
-        public L ItemThree;
-
-        public Tuple(T itemOne, K itemTwo, L itemThree)
-        {
-            ItemOne = itemOne;
-            ItemTwo = itemTwo;
-            ItemThree = itemThree;
         }
     }
 }
