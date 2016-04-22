@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(FractalGenerator3))]
-public class FractalGeneratorInspector3 : Editor
+[CustomEditor(typeof(AnimatedMeshGenerator))]
+public class AnimatedMeshGeneratorInspector : Editor
 {
     public override void OnInspectorGUI()
     {

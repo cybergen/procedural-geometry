@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(FractalGenerator))]
-public class FractalGeneratorInspector : Editor
+[CustomEditor(typeof(ComputeToTessellationGenerator))]
+public class ComputeToTessellationGeneratorInspector : Editor
 {
     public override void OnInspectorGUI()
     {

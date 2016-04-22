@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FractalGenerator2 : Generatable
+public class ComputeToTessellationGenerator : Generatable
 {
     public ComputeShader TopologyCompute;
     public int FractalIterations;

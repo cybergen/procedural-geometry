@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
-public class FractalGenerator : Generatable
+public class AnimatedMeshGenerator : Generatable
 {
     public enum GeneratorType
     {
