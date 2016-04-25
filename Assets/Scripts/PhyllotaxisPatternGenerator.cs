@@ -16,8 +16,6 @@ public class PhyllotaxisPatternGenerator : Generatable
     public int PhyllotaxisCount;
     public float PhyllotaxisAngle;
     public float ChildSizeScale;
-    public bool DrawPoints;
-    public bool DrawVoronoi;
 
     private List<Color> _colors = new List<Color>();
 
@@ -47,16 +45,36 @@ public class PhyllotaxisPatternGenerator : Generatable
         var StartBuffer = new ScalablePointBuffer();
         StartBuffer.AddEntry(0, 0, 0);
         StartBuffer.CalculateScaledPoints(TextureSize, TextureSize / 2, TextureSize / 2);
-        StartBuffer.CalculateVoronoi(TextureSize, TextureSize / 2, TextureSize / 2);
-        StartBuffer.CalculateChildren(FractalIterations, ChildSizeScale, newPoints);
+
+
+        var depth = FractalIterations;
 
         foreach (var child in StartBuffer.Points)
         {
+            depth--;
             DrawPoint(tex, child.ItemOne, child.ItemTwo, Color.black);
+
+            if (depth >= 1)
+            {
+                var buffer = StartBuffer.GetChild(ChildSizeScale, child.ItemOne, child.ItemTwo, newPoints);
+                DrawPoints(depth, tex, buffer, ChildSizeScale);
+            }
         }
 
         tex.Apply();
         AttachedMaterial.SetTexture("_MainTex", tex);
+    }
+
+    private void DrawPoints(int depth, Texture2D tex, ScalablePointBuffer startBuffer, float scale)
+    {
+        foreach (var point in startBuffer.Points)
+        {
+            DrawPoint(tex, point.ItemOne, point.ItemTwo, Color.black);
+            if (depth > 1)
+            {
+                DrawPoints(depth - 1, tex, startBuffer.GetChild(scale, point.ItemOne, point.ItemTwo), scale);
+            }
+        }
     }
 
     private void DrawPoint(Texture2D tex, int pixX, int pixY, Color color)
