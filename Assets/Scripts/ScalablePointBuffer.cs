@@ -5,14 +5,15 @@ using BriLib;
 
 public class ScalablePointBuffer : IVoronoiProvider
 {
+    public float Size { get; private set; }
+    public int CenterX { get; private set; }
+    public int CenterY { get; private set; }
+
     private List<Tuple<float, float, float>> _unscaledList = new List<Tuple<float, float, float>>();
     private List<Tuple<int, int, float>> _scaledList = new List<Tuple<int, int, float>>();
     private float _maxRange = float.MinValue;
     private int _width;
     private int _height;
-    private int _centerX;
-    private int _centerY;
-    private float _size;
 
     public void AddEntry(float x, float y, float dist)
     {
@@ -22,12 +23,12 @@ public class ScalablePointBuffer : IVoronoiProvider
 
     public void CalculateScaledPoints(float size, int centerX, int centerY)
     {
-        int previousX = _centerX = centerX;
-        int previousY = _centerY = centerY;
+        int previousX = CenterX = centerX;
+        int previousY = CenterY = centerY;
         float realMax = Mathf.Max(0.5f, _maxRange);
         _width = (int)(size * realMax + centerX);
         _height = (int)(size * realMax + centerY);
-        _size = size;
+        Size = size;
         foreach (var entry in _unscaledList)
         {
             var sizeMult = size * entry.ItemThree / realMax;
@@ -102,9 +103,9 @@ public class ScalablePointBuffer : IVoronoiProvider
         {
             var entry = _unscaledList[i];
 
-            var sizeMult = _size * entry.ItemThree / _maxRange;
-            var entryX = (int)(entry.ItemOne * sizeMult + _centerX);
-            var entryY = (int)(entry.ItemTwo * sizeMult + _centerY);
+            var sizeMult = Size * entry.ItemThree / _maxRange;
+            var entryX = (int)(entry.ItemOne * sizeMult + CenterX);
+            var entryY = (int)(entry.ItemTwo * sizeMult + CenterY);
             var neighbor = new Vector2(entryX, entryY);
 
             var dist = Vector2.Distance(neighbor, point);
