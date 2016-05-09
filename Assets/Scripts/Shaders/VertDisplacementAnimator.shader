@@ -47,7 +47,10 @@
         	float4 displace = float4((tex2Dlod(_Displacement, float4(v.texcoord.xy,0,0)).xyz - 0.5) * 2, 0);
             v.vertex += displace * _Scale;
 
-            v.normal = float4(tex2Dlod(_Normal, float4(v.texcoord.xy,0,0)).xyz * 2 - 1, 1);
+            float4 normal = float4((tex2Dlod(_Normal, float4(v.texcoord.xy,0,0)).xyz - 0.5) * 2, 0);
+            normal.x *= -1;
+            normal.z *= -1;
+            v.normal = normal;
         }
 
         struct Input 

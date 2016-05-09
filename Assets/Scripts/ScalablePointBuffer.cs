@@ -13,7 +13,6 @@ public class ScalablePointBuffer : IVoronoiProvider
     private List<Tuple<int, int, float>> _scaledList = new List<Tuple<int, int, float>>();
     private float _maxRange = float.MinValue;
     private int _width;
-    private int _height;
 
     public void AddEntry(float x, float y, float dist)
     {
@@ -27,19 +26,33 @@ public class ScalablePointBuffer : IVoronoiProvider
         int previousY = CenterY = centerY;
         float realMax = Mathf.Max(0.5f, _maxRange);
         _width = (int)(size * realMax + centerX);
-        _height = (int)(size * realMax + centerY);
         Size = size;
         foreach (var entry in _unscaledList)
         {
             var sizeMult = size * entry.ItemThree / realMax;
             var x = (int)(entry.ItemOne * sizeMult + centerX);
             var y = (int)(entry.ItemTwo * sizeMult + centerY);
-
-            var scale = Mathf.Sqrt(Mathf.Pow(x - previousX, 2) + Mathf.Pow(y - previousY, 2));
-            _scaledList.Add(new Tuple<int, int, float>(x, y, scale));
+            
+            _scaledList.Add(new Tuple<int, int, float>(x, y, 0));
 
             previousX = x;
             previousY = y;
+        }
+
+        for (int i = 0; i < _scaledList.Count; i++)
+        {
+            var entry = _scaledList[i];
+            var entryX = entry.ItemOne;
+            var entryY = entry.ItemTwo;
+            var entryVect = new Vector2(entryX, entryY);
+
+            var neighbor = GetNearestNeighbor(entry.ItemOne, entry.ItemTwo);
+            var neighborX = _scaledList[neighbor].ItemOne;
+            var neighborY = _scaledList[neighbor].ItemTwo;
+            var neighborVect = new Vector2(neighborX, neighborY);
+
+            var range = Vector2.Distance(entryVect, neighborVect);
+            _scaledList[i] = new Tuple<int, int, float>(entryX, entryY, range);
         }
     }
 
@@ -69,8 +82,6 @@ public class ScalablePointBuffer : IVoronoiProvider
 
     public ScalablePointBuffer GetChild(float scale, int x, int y, List<Tuple<float, float, float>> pointList = null)
     {
-        var realRange = Mathf.Max(0.5f, _maxRange);
-
         for (int i = 0; i < _scaledList.Count; i++)
         {
             var point = _scaledList[i];
@@ -109,7 +120,7 @@ public class ScalablePointBuffer : IVoronoiProvider
             var neighbor = new Vector2(entryX, entryY);
 
             var dist = Vector2.Distance(neighbor, point);
-            if (dist < previousDistance)
+            if (dist < previousDistance && dist != 0f)
             {
                 previousClosest = i;
                 previousDistance = dist;

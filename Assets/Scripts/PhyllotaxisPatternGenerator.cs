@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using BriLib;
+using Buffer = ScalablePointBuffer;
 
 public class PhyllotaxisPatternGenerator : Generatable
 {
@@ -21,14 +22,23 @@ public class PhyllotaxisPatternGenerator : Generatable
     public bool DrawDebugPoints;
     public bool DrawCones;
 
-    private List<Color> _colors = new List<Color>();
-
     public override void Generate()
     {
+        //Initialization of variables for storing point data
+        var displaceArray = new Vector3[TextureSize, TextureSize];
+        var normalArray = new Vector3[TextureSize, TextureSize];
+
+        //Texture initializaition
         var ts = TextureSize;
         var debugPoints = new Texture2D(ts, ts, TextureFormat.RGB24, false) { wrapMode = TextureWrapMode.Clamp };
         var displaceMap = new Texture2D(ts, ts, TextureFormat.RGB24, false) { wrapMode = TextureWrapMode.Clamp };
         var normalMap = new Texture2D(ts, ts, TextureFormat.RGB24, false) { wrapMode = TextureWrapMode.Clamp };
+
+        var plusVect = new Vector3(0.5f, 0.5f, 0.5f);
+        var upVector = Vector3.up;
+        upVector /= 2;
+        upVector += plusVect;
+
         for (int y = 0; y < ts; y++)
         {
             for (int x = 0; x < ts; x++)
@@ -36,9 +46,12 @@ public class PhyllotaxisPatternGenerator : Generatable
                 debugPoints.SetPixel(x, y, Color.white);
                 displaceMap.SetPixel(x, y, new Color(0.5f, 0.5f, 0.5f));
                 normalMap.SetPixel(x, y, new Color(0.5f, 1f, 0.5f));
+                normalArray[x, y] = Vector3.up;
+                displaceArray[x, y] = Vector3.zero;
             }
         }
 
+        //Phyllotaxis pattern generation
         float e = 2.71828f;
         List<Tuple<float, float, float>> newPoints = new List<Tuple<float, float, float>>();
 
@@ -53,70 +66,24 @@ public class PhyllotaxisPatternGenerator : Generatable
             newPoints.Add(new Tuple<float, float, float>(normal.x, normal.y, distance));
         }
 
-        var StartBuffer = new ScalablePointBuffer();
+        //Creation of the first buffer
+        var StartBuffer = new Buffer();
         StartBuffer.AddEntry(0, 0, 0);
-        StartBuffer.CalculateScaledPoints(ts, ts / 2, ts / 2);        
+        StartBuffer.CalculateScaledPoints(ts, ts / 2, ts / 2);
 
-        var depth = FractalIterations;
-        foreach (var child in StartBuffer.Points)
-        {
-            depth--;
-            if (DrawDebugPoints)
-            {
-                DrawPoint(debugPoints, child.ItemOne, child.ItemTwo, Color.black);
-            }
+        ProcessBuffers(
+            StartBuffer,
+            StartBuffer.Size / 2,
+            displaceArray,
+            normalArray,
+            FractalIterations,
+            debugPoints,
+            TextureSize / 2,
+            TextureSize / 2,
+            newPoints);
 
-            if (DrawCones)
-            {
-                var size = StartBuffer.Size / 2;
-
-                float maxX = float.MinValue;
-                float maxY = float.MinValue;
-                float maxZ = float.MinValue;
-                float minX = float.MaxValue;
-                float minY = float.MaxValue;
-                float minZ = float.MaxValue;
-
-                for (int y = 0; y < ts; y++)
-                {
-                    for (int x = 0; x < ts; x++)
-                    {
-                        var xNess = ((x - child.ItemOne) / size);
-                        var yNess = GetHeight(x, y, child.ItemOne, child.ItemTwo, size);
-                        var zNess = ((y - child.ItemTwo) / size);
-
-                        maxX = Mathf.Max(xNess, maxX);
-                        maxY = Mathf.Max(yNess, maxY);
-                        maxZ = Mathf.Max(zNess, maxZ);
-
-                        minX = Mathf.Min(xNess, minX);
-                        minY = Mathf.Min(yNess, minY);
-                        minZ = Mathf.Min(zNess, minZ);
-
-                        var displace = new Vector3(xNess, yNess, zNess);
-                        displace /= -2;
-                        displace += new Vector3(0.5f, 0.5f, 0.5f);
-                        var col = new Color(displace.x, displace.y, displace.z);
-                        displace.Normalize();
-                        var norm = new Color(displace.x, displace.y, displace.z);
-                        displaceMap.SetPixel(x, y, col);
-                        normalMap.SetPixel(x, y, norm);
-                    }
-                }
-
-                Debug.Log("Max x: " + maxX + ", y: " + maxY + ", z: " + maxZ);
-                Debug.Log("Min x: " + minX + ", y: " + minY + ", z: " + minZ);
-            }
-
-            if (depth >= 1)
-            {
-                var buffer = StartBuffer.GetChild(ChildSizeScale, child.ItemOne, child.ItemTwo, newPoints);
-                if (DrawDebugPoints)
-                {
-                    DrawPoints(depth, debugPoints, buffer, ChildSizeScale);
-                }
-            }
-        }
+        //DrawCone(512, 512, 300, 0.5f, displaceArray, normalArray);
+        //DrawCone(662, 512, 100, 0.2f, displaceArray, normalArray);
 
         if (DrawDebugPoints)
         {
@@ -126,6 +93,25 @@ public class PhyllotaxisPatternGenerator : Generatable
 
         if (DrawCones)
         {
+            //Write array values into textures
+            for (int y = 0; y < TextureSize; y++)
+            {
+                for (int x = 0; x < TextureSize; x++)
+                {
+                    var displace = displaceArray[x, y];
+                    displace /= 2;
+                    displace += plusVect;
+                    var col = new Color(displace.x, displace.y, displace.z);
+                    displaceMap.SetPixel(x, y, col);
+
+                    var normVector = normalArray[x, y];
+                    normVector /= 2;
+                    normVector += plusVect;
+                    var normCol = new Color(normVector.x, normVector.y, normVector.z);
+                    normalMap.SetPixel(x, y, normCol);
+                }
+            }
+
             displaceMap.Apply();
             normalMap.Apply();
             AttachedMaterial.SetTexture("_Displacement", displaceMap);
@@ -133,14 +119,154 @@ public class PhyllotaxisPatternGenerator : Generatable
         }
     }
 
+    private void DrawCone(int centerX, int centerY, int radius, float scale, Vector3[,] displace, Vector3[,] normalMap)
+    {
+        var startX = Mathf.Max(0, centerX - radius);
+        var startY = Mathf.Max(0, centerY - radius);
+        var endX = Mathf.Min(TextureSize, centerX + radius);
+        var endY = Mathf.Min(TextureSize, centerY + radius);
+        var center = new Vector2(centerX, centerY);
+
+        var oldCenterVector = new Vector3(centerX / TextureSize, 0, centerY / TextureSize) + displace[centerX, centerY];
+        var localUp = normalMap[centerX, centerY];
+
+        for (int y = startY; y < endY; y++)
+        {
+            for (int x = startX; x < endX; x++)
+            {
+                var dist = Vector2.Distance(center, new Vector2(x, y));
+                if (dist < radius)
+                {
+                    var distScale = (radius - dist) / radius * scale;
+                    var displaceVect = new Vector3(0, distScale, 0);
+                    displace[x, y] += distScale * localUp;
+
+                    var xNess = (float)(x - centerX) / TextureSize;
+                    var zNess = (float)(y - centerY) / TextureSize;
+                    var normal = new Vector3(xNess, distScale, zNess) - oldCenterVector;
+                    normal.Normalize();
+                    normalMap[x, y] = normal;
+                }
+            }
+        }
+    }
+
+    private Quaternion GetDeviationFromUp(Vector3 localUp)
+    {
+        return Quaternion.LookRotation(new Vector3(0, 0, 1), localUp);
+    }
+
+    private void ProcessBuffers(
+        Buffer buff, 
+        float size, 
+        Vector3[,] displaceArray, 
+        Vector3[,] normArray, 
+        int depth, 
+        Texture2D debugPoints, 
+        int centerX, 
+        int centerY, 
+        List<Tuple<float, float, float>> points = null)
+    {
+        depth--;
+        var ts = TextureSize;
+        var up = Vector3.up;
+        Debug.Log("Launching process buffers with center x: " + centerX + ", center Y: " + centerY + ", size: " + size);
+
+        for (int y = 0; y < 1024; y++)
+        {
+            for (int x = 0; x < 1024; x++)
+            {
+                displaceArray[x, y] = Vector3.zero;
+            }
+        }
+
+
+        foreach (var child in buff.Points)
+        {
+            Debug.Log("Examining point with x: " + child.ItemOne + ", y: " + child.ItemTwo + ", and range: " + child.ItemThree);
+
+            if (DrawDebugPoints)
+            {
+                DrawPoint(debugPoints, child.ItemOne, child.ItemTwo, Color.black);
+            }
+
+            if (DrawCones)
+            {
+                var childSize = child.ItemThree == 0 ? size : child.ItemThree;
+
+                var startY = System.Math.Max(child.ItemTwo - childSize, 0);
+                var startX = System.Math.Max(child.ItemOne - childSize, 0);
+                var endY = System.Math.Min(child.ItemTwo + childSize, TextureSize);
+                var endX = System.Math.Min(child.ItemOne + childSize, TextureSize);
+
+                for (int y = (int)startY; y < endY; y++)
+                {
+                    for (int x = (int)startX; x < endX; x++)
+                    {
+                        var xNess = -1; //((x - child.ItemOne) / -size);
+                        var yNess = GetHeight(x, y, child.ItemOne, child.ItemTwo, child.ItemThree == 0 ? size : child.ItemThree);
+                        var zNess = -1; //((y - child.ItemTwo) / -size);
+
+                        var displacePoint = new Vector3(xNess, yNess, zNess);
+
+                        //Re-oriented normal mapping - rotate the new point about prior normal for this position
+                        //var baseNorm = normArray[x, y];
+                        //Vector3 newDisp = Vector3.down;
+
+                        //if (baseNorm == up)
+                        //{
+                        //    newDisp = displacePoint;
+                        //}
+                        //else
+                        //{
+                        //    Quaternion q;
+                        //    var cross = Vector3.Cross(up, baseNorm);
+                        //    var w = Mathf.Sqrt(up.sqrMagnitude) * (baseNorm.sqrMagnitude) + Vector3.Dot(up, baseNorm);
+                        //    q = new Quaternion(cross.x, cross.y, cross.z, w);
+
+                        //    newDisp = q * displacePoint;
+                        //}
+
+                        //displaceArray[x, y] = newDisp;
+                        displaceArray[x, y] += displacePoint;
+
+                        //newDisp.Normalize();
+                        //normArray[x, y] = newDisp;
+                        displacePoint.Normalize();
+                        normArray[x, y] = displacePoint;
+                    }
+                }
+            }
+
+            if (depth >= 1)
+            {
+                var buffer = buff.GetChild(ChildSizeScale, child.ItemOne, child.ItemTwo, points);
+                if (DrawDebugPoints)
+                {
+                    ProcessBuffers(
+                        buffer, 
+                        buffer.Size / 2, 
+                        displaceArray, 
+                        normArray, 
+                        depth, 
+                        debugPoints, 
+                        buffer.CenterX, 
+                        buffer.CenterY, 
+                        points);
+                }
+            }
+        }
+    }
+
     private float GetHeight(int x, int y, int centerX, int centerY, float cellSize)
     {
-        float totalScale = cellSize * 2 / TextureSize;
+        float totalScale = cellSize / (TextureSize / 2);
+
         float distance = Vector2.Distance(new Vector2(x, y), new Vector2(centerX, centerY));
         var hypotenuse = Mathf.Sqrt(cellSize.Sq() + cellSize.Sq());
         float distScale = (hypotenuse - distance) / hypotenuse;
-        var returnValue = distScale * totalScale;
-        return returnValue;
+
+        return distScale * totalScale;
     }
 
     private void DrawPoints(int depth, Texture2D tex, ScalablePointBuffer startBuffer, float scale)
