@@ -44,15 +44,20 @@ public class ComputeToTessellationGenerator : Generatable
         normal.enableRandomWrite = true;
         normal.Create();
 
+        var albedo = new RenderTexture(TextureSize, TextureSize, 24);
+        albedo.enableRandomWrite = true;
+        albedo.Create();
+
         TopologyCompute.SetBuffer(kernel, "Data", cb);
         TopologyCompute.SetTexture(kernel, "Displace", displace);
         TopologyCompute.SetTexture(kernel, "Normal", displace);
+        TopologyCompute.SetTexture(kernel, "Albedo", albedo);
         TopologyCompute.SetInt("Iterations", FractalIterations);
         TopologyCompute.SetInt("SpiralCount", SpiralCount);
         TopologyCompute.SetInt("HalfTextureSize", TextureSize / 2);
         TopologyCompute.Dispatch(kernel, TextureSize / 8, TextureSize / 8, 1);
 
-        AttachedMaterial.SetTexture("_MainTex", displace);
+        AttachedMaterial.SetTexture("_MainTex", albedo);
         AttachedMaterial.SetTexture("_Displacement", displace);
         AttachedMaterial.SetTexture("_Normal", normal);
 

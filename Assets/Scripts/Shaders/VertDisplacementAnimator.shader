@@ -4,6 +4,7 @@
     {
         _Tess ("Tessellation", Range(1,64)) = 4
         _Scale ("Scale", Range(0,20)) = 1
+		_ScaleTarget("ScaleTarget", Range(0,20)) = 0.4
 		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
 		_Displacement ("Displacement (RGB)", 2D) = "white" {}
@@ -41,10 +42,12 @@
         sampler2D _Displacement;
         sampler2D _Normal;
         float _Scale;
+		float _ScaleTarget;
 
         void disp (inout appdata v)
         {
         	float4 displace = float4((tex2Dlod(_Displacement, float4(v.texcoord.xy,0,0)).xyz - 0.5) * 2, 0);
+			_Scale = (sin(_Time * 20) / 2 + 0.5) * _ScaleTarget;
             v.vertex += displace * _Scale;
 
             float4 normal = float4((tex2Dlod(_Normal, float4(v.texcoord.xy,0,0)).xyz - 0.5) * 2, 0);

@@ -97,6 +97,12 @@ public class AnimatedMeshGenerator : Generatable
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GrowTillEnd = true;
+        }
+
+
         var delta = Time.deltaTime;
         if (GrowByOne)
         {

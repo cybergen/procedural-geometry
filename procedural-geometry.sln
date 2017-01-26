@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "procedural-geometry.CSharp", "procedural-geometry.CSharp.csproj", "{EAF9494A-2931-65D7-5651-20EB67E51A9E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "procedural-geometry", "procedural-geometry.csproj", "{52D4D7AC-7C6D-5276-B3AD-F8F1634CA21A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "procedural-geometry.CSharp.Editor", "procedural-geometry.CSharp.Editor.csproj", "{0009AA01-64C5-BDD6-CEF7-29DF2A35E905}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "procedural-geometry.Editor", "procedural-geometry.Editor.csproj", "{0404AC6C-B2C0-B075-CEF5-42CA3997E443}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,14 +11,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EAF9494A-2931-65D7-5651-20EB67E51A9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EAF9494A-2931-65D7-5651-20EB67E51A9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EAF9494A-2931-65D7-5651-20EB67E51A9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EAF9494A-2931-65D7-5651-20EB67E51A9E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0009AA01-64C5-BDD6-CEF7-29DF2A35E905}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0009AA01-64C5-BDD6-CEF7-29DF2A35E905}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0009AA01-64C5-BDD6-CEF7-29DF2A35E905}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0009AA01-64C5-BDD6-CEF7-29DF2A35E905}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52D4D7AC-7C6D-5276-B3AD-F8F1634CA21A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52D4D7AC-7C6D-5276-B3AD-F8F1634CA21A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52D4D7AC-7C6D-5276-B3AD-F8F1634CA21A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52D4D7AC-7C6D-5276-B3AD-F8F1634CA21A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0404AC6C-B2C0-B075-CEF5-42CA3997E443}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0404AC6C-B2C0-B075-CEF5-42CA3997E443}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0404AC6C-B2C0-B075-CEF5-42CA3997E443}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0404AC6C-B2C0-B075-CEF5-42CA3997E443}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

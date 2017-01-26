@@ -1,4 +1,4 @@
 sceneSetups:
-- path: C:/projects/unityviewer2.0/unityviewer2.0/Assets/Matterport/Scenes/Viewer.unity
+- path: C:/Users/brian/Dropbox/projects/volumetric/VolumetricRendering/Assets/scenes/main.unity
   isLoaded: 1
   isActive: 1

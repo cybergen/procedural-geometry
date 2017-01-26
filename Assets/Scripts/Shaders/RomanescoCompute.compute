@@ -2,6 +2,7 @@
 
 RWTexture2D<float4> Displace;
 RWTexture2D<float4> Normal;
+RWTexture2D<float4> Albedo;
 int Iterations;
 int SpiralCount;
 int HalfTextureSize;
@@ -73,4 +74,5 @@ void CSMain(int3 id : SV_DispatchThreadID)
     direction /= 1.4;
     Displace[id.xy] = float4(direction.xyz / 2 + 0.5, 1);
     Normal[id.xy] = float4(direction.xyz / 2 + 0.5, 1);
+	Albedo[id.xy] = float4(direction.xyz / 2 + 0.1, 1);
 }
